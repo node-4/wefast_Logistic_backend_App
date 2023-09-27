@@ -6,13 +6,13 @@ const auth = require('../middlewares/auth.js');
 
 module.exports = (app) => {
 
-        app.post('/', auth.admin, vehicleTypeValidator.addVehicleType, vehicleTypeController.addvehicleType);
+        app.post('/vehicle-type', auth.admin, vehicleTypeValidator.addVehicleType, vehicleTypeController.addvehicleType);
 
-        app.get('/', vehicleTypeController.getAllVehicleTypes);
+        app.get('/vehicle-type', vehicleTypeController.getAllVehicleTypes);
 
-        app.get('/:vehicleTypeId', vehicleTypeValidator.getVehicleTypeId, vehicleTypeController.getVehicleType);
+        app.get('/vehicle-type/:vehicleTypeId', vehicleTypeValidator.getVehicleTypeId, vehicleTypeController.getVehicleType);
 
-        app.put('/:vehicleTypeId', auth.admin,
+        app.put('/vehicle-type/:vehicleTypeId', auth.admin,
                 [vehicleTypeValidator.update.vehicleTypeId, vehicleTypeValidator.update.updatePayload],
                 vehicleTypeController.updateVehicleType)
 }

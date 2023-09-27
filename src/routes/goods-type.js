@@ -6,17 +6,17 @@ const auth = require('../middlewares/auth.js');
 // const router = express.Router();
 module.exports = (app) => {
 
-        app.post('/', auth.admin,
+        app.post('/goods-type/', auth.admin,
                 // goodsTypeValidator.addGoodsType, 
                 goodsTypeController.addGoodsType);
 
-        app.get('/', goodsTypeController.getAllGoodsTypes);
+        app.get('/goods-type/all', goodsTypeController.getAllGoodsTypes);
 
-        app.delete('/:goodsTypeId', auth.admin,
+        app.delete('/goods-type/:goodsTypeId', auth.admin,
                 //  goodsTypeValidator.goodsTypeId,
                 goodsTypeController.deleteGoodsType);
 
-        app.put('/:goodsTypeId', auth.admin,
+        app.put('/goods-type/:goodsTypeId', auth.admin,
                 //  [goodsTypeValidator.goodsTypeId, goodsTypeValidator.updateGoodsType],
                 goodsTypeController.updateGoodsType);
 };

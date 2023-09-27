@@ -6,7 +6,7 @@ module.exports.getWallet = async (req, res, next) => {
 
     return res.status(200).json({
       msg: `user's wallet`,
-      data: { wallet },
+      data: wallet,
     });
   } catch (error) {
     next(error);
@@ -20,9 +20,9 @@ module.exports.createOrderToAddBalance = async (req, res, next) => {
       req.body.amount
     );
 
-    res.status(200).json({
+    return  res.status(200).json({
       msg: "order for adding money to wallet",
-      data: { order }
+      data: order
     })
   } catch (error) {
     next(error);

@@ -6,7 +6,7 @@ const addvehicleType = async (req, res, next) => {
 
         return res.status(200).json({
             msg: 'vehicle type added successfully',
-            data: { vehicleType }
+            data: vehicleType
         });
     } catch (error) {
         next(error);
@@ -19,7 +19,7 @@ const updateVehicleType = async (req, res, next) => {
 
         return res.status(200).json({
             msg: 'vehicle type updated',
-            data: { vehicleType }
+            data: vehicleType
         });
     } catch (error) {
         next(error);
@@ -32,7 +32,7 @@ const getAllVehicleTypes = async (req, res, next) => {
 
         return res.status(200).json({
             msg: 'vehicle types',
-            data: { vehicleTypes }
+            data: vehicleTypes
         });
     } catch (error) {
         next(error);
@@ -45,7 +45,7 @@ const getVehicleType = async (req, res, next) => {
 
         return res.status(200).json({
             msg: 'vehicle type details',
-            data: { vehicleType }
+            data: vehicleType
         });
     } catch (error) {
         next(error);

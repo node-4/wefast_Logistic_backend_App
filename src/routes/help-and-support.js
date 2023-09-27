@@ -5,8 +5,8 @@ const auth = require('../middlewares/auth.js');
 // const router = express.Router();
 module.exports = (app) => {
 
-        app.post('/', auth.admin, helpAndSupportController.add);
+        app.post('/help-and-support', auth.admin, helpAndSupportController.add);
 
-        app.get('/', helpAndSupportController.getHelpAndSupport);
+        app.get('/help-and-support', helpAndSupportController.getHelpAndSupport);
 }
 // module.exports = { helpAndSupportRouter: router };

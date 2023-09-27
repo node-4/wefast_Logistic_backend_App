@@ -16,6 +16,6 @@ const storage = diskStorage({
 
 const upload = multer({ storage });
 module.exports = (app) => {
-    app.post('/', userOrdriver, upload.single('image'), imageUploadController.imageUpload);
+    app.post('/image-upload', userOrdriver, upload.single('image'), imageUploadController.imageUpload);
 }
 // module.exports = { imageUploadRouter: router };

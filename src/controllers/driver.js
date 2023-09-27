@@ -27,10 +27,7 @@ exports.loginOtpVerification = async (req, res, next) => {
 exports.uploadProfileImage = async (req, res, next) => {
     try {
         await driverService.uploadProfileImage(req.user._id, req.body.imageUrl);
-
-        return res.status(200).json({
-            msg: 'image uploaded successfully'
-        });
+        return res.status(200).json({ msg: 'image uploaded successfully' });
     } catch (error) {
         next(error);
     }
@@ -42,13 +39,8 @@ exports.getAllDrivers = async (req, res, next) => {
         if (req.query.page > 0) {
             page = req.query.page - 1;
         }
-
         const drivers = await driverService.getAllDrivers(page);
-
-        return res.status(200).json({
-            msg: 'drivers',
-            data: { drivers }
-        });
+        return res.status(200).json({ msg: 'drivers', data: drivers });
     } catch (error) {
         next(error);
     }
@@ -57,11 +49,7 @@ exports.getAllDrivers = async (req, res, next) => {
 exports.getDriverProfile = async (req, res, next) => {
     try {
         const driver = await driverService.getDriverProfile(req.user._id);
-
-        return res.status(200).json({
-            msg: "driver",
-            data: { driver }
-        });
+        return res.status(200).json({ msg: "driver", data: driver });
     } catch (error) {
         next(error);
     }

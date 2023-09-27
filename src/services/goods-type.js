@@ -15,7 +15,7 @@ exports.addGoodsType = async (goodsTypePayload) => {
             lowercase_name: goodsTypePayload.name.toLowerCase()
         });
         if (goodsTypeWithName) {
-            throw new ValidationError('goods type with name already exist');
+            return { status: 409, message: "goods type with name already exist." }
         }
 
         const goodsType = new GoodsTypeModel({
@@ -23,7 +23,9 @@ exports.addGoodsType = async (goodsTypePayload) => {
         });
         await goodsType.save();
 
-        return camelcaseKeys(goodsType.toObject());
+        let data = camelcaseKeys(goodsType.toObject())
+        return { status: 200, message: "Goods type.", data: data }
+
     } catch (error) {
         throw error;
     }

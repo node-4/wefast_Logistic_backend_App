@@ -1,6 +1,6 @@
 const camelcaseKeys = require('camelcase-keys');
 const snakecaseKeys = require('snakecase-keys');
-const { HelpAndSupportModel } = require('../models/index.js');
+const HelpAndSupportModel = require("../models/help-and-support.js");
 
 const add = async (payload) => {
     try {

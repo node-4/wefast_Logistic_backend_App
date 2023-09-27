@@ -1,4 +1,4 @@
-const vehicleService = require('../services/index.js');
+const vehicleService = require('../services/index.js').vehicleService;
 
 const addVehicle = async (req, res, next) => {
     try {
@@ -6,7 +6,7 @@ const addVehicle = async (req, res, next) => {
 
         return res.status(200).json({
             msg: 'vehicle added',
-            data: { vehicle }
+            data: vehicle
         });
     } catch (error) {
         next(error);
@@ -25,7 +25,7 @@ const getAllVehicles = async (req, res, next) => {
 
         return res.status(200).json({
             msg: 'vehicles',
-            data: { vehicles }
+            data: vehicles
         });
     } catch (error) {
         next(error);

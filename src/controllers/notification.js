@@ -23,7 +23,7 @@ const getNotifications = async (req, res, next) => {
 
         return res.status(200).json({
             msg: `${req.user.role} notifications`,
-            data: { notifications }
+            data: notifications
         });
     } catch (error) {
         next(error);
@@ -36,7 +36,7 @@ const getDriversNotifications = async (req, res, next) => {
 
         return res.status(200).json({
             msg: `driver's notifications`,
-            data: { notifications }
+            data: notifications
         });
     } catch (error) {
         next(error);
@@ -61,7 +61,7 @@ const getUsersNotifications = async (req, res, next) => {
 
         return res.status(200).json({
             msg: `driver's notifications`,
-            data: { notifications }
+            data: notifications
         });
     } catch (error) {
         next(error);

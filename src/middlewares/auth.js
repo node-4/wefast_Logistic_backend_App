@@ -9,14 +9,13 @@ async function user(req, res, next) {
         const decodedToken = await getDecodedToken(req.get('Authorization'));
         console.log(decodedToken);
         if (decodedToken.scope !== 'login') {
-            throw new AuthError('invalid auth token provided');
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
         const user = await getUser(decodedToken.id);
         console.log(user);
         if (!user) {
-            throw new AuthError('invalid auth token provided');
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
-        console.log(`user name ${user.name}`);
         req.user = user;
         console.log(user);
         next();
@@ -30,11 +29,11 @@ async function admin(req, res, next) {
         console.log('admin auth');
         const decodedToken = await getDecodedToken(req.get('Authorization'));
         if (decodedToken.scope !== 'login') {
-            throw new AuthError('invalid auth token provided');
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
         const user = await getAdmin(decodedToken.id);
         if (!user) {
-            throw new AuthError('invalid auth token provided');
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
         console.log(`user name ${user.name}`);
         req.user = user;
@@ -49,11 +48,11 @@ async function driver(req, res, next) {
         console.log('driver auth');
         const decodedToken = await getDecodedToken(req.get('Authorization'));
         if (decodedToken.scope !== 'login') {
-            throw new AuthError('invalid auth token provided');
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
         const user = await getDriver(decodedToken.id);
         if (!user) {
-            throw new AuthError('invalid auth token provided');
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
         console.log(`user name ${user.name}`);
         req.user = user;
@@ -68,11 +67,11 @@ async function userOrAdmin(req, res, next) {
         console.log('useroradmin');
         const decodedToken = await getDecodedToken(req.get('Authorization'));
         if (decodedToken.scope !== 'login') {
-            throw new AuthError('invalid auth token provided');
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
         const user = await getAdmin(decodedToken.id) || await getUser(decodedToken.id);
         if (!user) {
-            throw new AuthError('invalid auth token provided');
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
         console.log(`user name ${user.name}`);
         req.user = user;
@@ -87,11 +86,11 @@ async function userOrdriver(req, res, next) {
         console.log('useroradmin');
         const decodedToken = await getDecodedToken(req.get('Authorization'));
         if (decodedToken.scope !== 'login') {
-            throw new AuthError('invalid auth token provided');
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
         const user = await getDriver(decodedToken.id) || await getUser(decodedToken.id);
         if (!user) {
-            throw new AuthError('invalid auth token provided');
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
         console.log(`user name ${user.name}`);
         req.user = user;
@@ -118,11 +117,11 @@ const getDecodedToken = async (authHeader) => {
     try {
         console.log('entered get decoded token utility....');
         if (!authHeader) {
-            throw new AuthError('token not provided or user not logged in')
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
         const authHeaderStringSplit = authHeader.split(' ');
         if (!authHeaderStringSplit[0] || authHeaderStringSplit[0].toLowerCase() !== 'bearer' || !authHeaderStringSplit[1]) {
-            throw new AuthError('token not provided or user not logged in');
+            return res.status(401).json({ status: 401, msg: 'invalid auth token provided', data: {} });
         }
 
         const token = authHeaderStringSplit[1];

@@ -5,6 +5,6 @@ const auth = require('../middlewares/auth.js');
 // const router = express.Router();
 module.exports = (app) => {
 
-        app.put('/', auth.driver, locationController.updateLocation);
+        app.put('/location', auth.driver, locationController.updateLocation);
 };
 // module.exports = { locationRouter: router };

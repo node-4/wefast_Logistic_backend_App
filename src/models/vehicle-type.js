@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-
-// Define the schema for the VehicleType collection
 const VehicleTypeSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -44,7 +42,6 @@ const VehicleTypeSchema = new mongoose.Schema({
     toJSON: { versionKey: false }
 });
 
-// Create and export the Mongoose model for the VehicleType collection
 module.exports = {
     VehicleTypeModel: mongoose.model('vehicle_type', VehicleTypeSchema)
 };

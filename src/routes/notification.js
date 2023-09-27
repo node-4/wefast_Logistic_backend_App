@@ -6,25 +6,25 @@ const auth = require('../middlewares/auth.js');
 // const router = express.Router();
 module.exports = (app) => {
 
-        app.post('/driver', auth.admin,
+        app.post('/notification/driver', auth.admin,
                 // notificationValidator.sendToDrivers,
                 notificationController.sendNotificationToDrivers);
 
-        app.post('/user', auth.admin,
+        app.post('/notification/user', auth.admin,
                 // notificationValidator.sendToUsers,
                 notificationController.sendNotificationToUsers);
 
-        app.get('/', auth.userOrdriver, notificationController.getNotifications);
+        app.get('/notification', auth.userOrdriver, notificationController.getNotifications);
 
-        app.get('/driver/:driverId', auth.admin,
+        app.get('/notification/driver/:driverId', auth.admin,
                 // notificationValidator.driverId,
                 notificationController.getDriversNotifications);
 
-        app.get('/user/:userId', auth.admin,
+        app.get('/notification/user/:userId', auth.admin,
                 // notificationValidator.userId,
                 notificationController.getUsersNotifications);
 
-        app.delete('/', auth.userOrdriver,
+        app.delete('/notification/', auth.userOrdriver,
                 // notificationValidator.deleteNotification,
                 notificationController.deleteNotification);
 };

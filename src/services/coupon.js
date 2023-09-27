@@ -20,20 +20,16 @@ const generateCouponCode = () => {
 
 exports.createCoupon = async (couponPayload) => {
     try {
-        if (couponPayload.couponCode && await CouponModel.findOne({
-            coupon_code: couponPayload.couponCode
-        })) {
-            throw new ValidationError('coupon with code already exists')
+        if (couponPayload.couponCode && await CouponModel.findOne({ coupon_code: couponPayload.couponCode })) {
+            return { status: 409, message: "coupon with code already exists." }
         }
-
         if (!couponPayload.couponCode) {
             couponPayload.couponCode = generateCouponCode();
         }
-
         const coupon = new CouponModel(snakecaseKeys(couponPayload));
         await coupon.save();
-
-        return camelcaseKeys(coupon.toObject());
+        let data = camelcaseKeys(coupon.toObject())
+        return { status: 200, message: "coupon created.", data: data }
     } catch (error) {
         throw error;
     }
@@ -88,7 +84,7 @@ exports.deleteCoupon = async (couponId) => {
         const coupon = await CouponModel.findById(couponId);
 
         if (!coupon) {
-            throw new ValidationError('invalid couponId');
+            return { status: 404, message: "invalid couponId." }
         }
 
         await CouponModel.findByIdAndDelete(couponId);
@@ -101,7 +97,7 @@ exports.checkValidity = async (couponId) => {
     try {
         const coupon = await CouponModel.findById(couponId).lean();
         if (!coupon) {
-            throw new ValidationError('invalid couponId');
+            return { status: 404, message: "invalid couponId." }
         }
 
         return moment(moment().format('YYYY-MM-DD')).isSameOrBefore(coupon.valid_till) ? true : false;
@@ -114,13 +110,13 @@ exports.updateCoupon = async (couponId, updatePayload) => {
     try {
         const coupon = await CouponModel.findById(couponId);
         if (!coupon) {
-            throw new ValidationError('invalid couponId');
+            return { status: 404, message: "invalid couponId." }
         }
 
         updatePayload.validFrom = updatePayload.validFrom || coupon.valid_from;
         if (updatePayload.validTill &&
             moment(updatePayload.validTill).isSameOrBefore(updatePayload.validFrom)) {
-            throw new ValidationError('invalid validTill date');
+            throw new Error('invalid validTill date');
         }
 
         await coupon.updateOne(snakecaseKeys(updatePayload));

@@ -5,11 +5,11 @@ const auth = require('../middlewares/auth.js');
 // const router = express.Router();
 module.exports = (app) => {
 
-        app.post('/', auth.driver,
+        app.post('/vehicle', auth.driver,
                 // vehicleValidator.add,
                 vehicleController.addVehicle
         );
-        app.get('/all',
+        app.get('/vehicle/all',
                 auth.admin,
                 // vehicleValidator.getAllVehicleQuery,
                 vehicleController.getAllVehicles);

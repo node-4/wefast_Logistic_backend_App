@@ -6,25 +6,24 @@ const auth = require('../middlewares/auth.js');
 // const router = express.Router();
 module.exports = (app) => {
 
-        app.post('/', auth.admin,
+        app.post('/coupon/', auth.admin,
                 // couponValidator.createCoupon,
                 couponController.createCoupon);
 
-        app.get('/all', auth.admin,
+        app.get('/coupon/all', auth.admin,
                 couponController.getAllCoupons);
 
-        app.get('/',
-                couponController.getAllValidCoupons);
+        app.get('/coupon/valid', couponController.getAllValidCoupons);
 
-        app.delete('/:couponId', auth.admin,
+        app.delete('/coupon/:couponId', auth.admin,
                 // couponValidator.couponIdParam,
                 couponController.deleteCoupon);
 
-        app.get('/check-validity/:couponId',
+        app.get('/coupon/check-validity/:couponId',
                 // couponValidator.couponIdParam,
                 couponController.checkValidity);
 
-        app.put('/:couponId', auth.admin,
+        app.put('/coupon/:couponId', auth.admin,
                 // couponValidator.couponIdParam, 
                 // couponValidator.updateCoupon,
 

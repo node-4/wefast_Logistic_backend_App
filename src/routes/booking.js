@@ -6,18 +6,18 @@ const auth = require('../middlewares/auth.js');
 // const router = express.Router();
 module.exports = (app) => {
 
-    app.post('/', auth.user,
+    app.post('/booking', auth.user,
         // bookingValidator.createBooking,
         bookingController.createBooking);
 
-    app.get("/suggestions", auth.driver,
+    app.get("/booking/booking/suggestions", auth.driver,
         bookingController.getBookingSuggestion)
 
-    app.post('/schedule', auth.user,
+    app.post('/booking/schedule', auth.user,
         // bookingValidator.createScheduledBooking,
         bookingController.createScheduledBooking);
 
-    // app.get('/', auth.userOrdriver,
+    // app.get('/booking/', auth.userOrdriver,
     //     // bookingValidator.statusQuery, (req, res, next) => {
     //         if (req.user.role == 'user') {
     //     return bookingController.getAllBookingsOfUser(req, res, next);
@@ -25,41 +25,41 @@ module.exports = (app) => {
     // return bookingController.getBookingsofDriver(req, res, next);
     //     });
 
-    app.get('/user/:userId', auth.admin,
+    app.get('/booking/user/:userId', auth.admin,
         // bookingValidator.userIdParam,
         // bookingValidator.statusQuery,
         bookingController.getAllBookingsOfUser);
 
-    app.get('/driver/:driverId', auth.admin,
+    app.get('/booking/driver/:driverId', auth.admin,
         // bookingValidator.driverIdParam,
         // bookingValidator.statusQuery,
         bookingController.getBookingsofDriver);
 
-    app.post('/reject/:bookingId', auth.driver,
+    app.post('/booking/reject/:bookingId', auth.driver,
         bookingController.rejectBooking);
 
-    app.get('/status/:bookingId', auth.user,
+    app.get('/booking/status/:bookingId', auth.user,
         bookingController.checkBookingStatus);
 
-    app.post("/estimated-price",
+    app.post("/booking/estimated-price",
         bookingController.getEstimatedPrice);
 
-    app.post("/estimated-price/all",
+    app.post("/booking/estimated-price/all",
         bookingController.getEstimatedPricesForAllVehicleTypes)
 
-    app.get("/:bookingId", auth.userOrdriver,
+    app.get("/booking/:bookingId", auth.userOrdriver,
         bookingController.getBookingById);
 
-    app.put("/:bookingId/pickup", auth.userOrdriver,
+    app.put("/booking/:bookingId/pickup", auth.userOrdriver,
         bookingController.pickUpCheckIn);
 
-    app.put("/:bookingId/complete", auth.userOrdriver,
+    app.put("/booking/:bookingId/complete", auth.userOrdriver,
         bookingController.completeBooking)
 
-    app.post('/:bookingId/cancel', auth.user,
+    app.post('/booking/:bookingId/cancel', auth.user,
         bookingController.cancelBooking);
 
-    app.post('/:bookingId/accept', auth.driver,
+    app.post('/booking/:bookingId/accept', auth.driver,
         bookingController.acceptBooking);
 }
 // module.exports = { bookingRouter: router };

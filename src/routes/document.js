@@ -5,6 +5,6 @@ const auth = require('../middlewares/auth.js');
 
 const router = express.Router();
 module.exports = (app) => {
-        app.post('/register', auth.driver, documentValidator.initialUpload, documentController.uploadDocuments);
+        app.post('/document/register', auth.driver, documentValidator.initialUpload, documentController.uploadDocuments);
 }
 // module.exports = router;

@@ -1,6 +1,8 @@
 const camelcaseKeys = require("camelcase-keys");
 const { ValidationError } = require("../errors/validation-error.js");
-const { WalletModel, TransactionModel } = require("../models/index.js");
+const WalletModel = require("../models/wallet.js");
+const TransactionModel = require("../models/transactions.js");
+
 require('dotenv').config();
 const Razorpay = require("razorpay");
 

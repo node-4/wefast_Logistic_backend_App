@@ -1,4 +1,4 @@
-const helpAndSupportService = require('../services/index.js');
+const helpAndSupportService = require('../services/index.js').helpAndSupportService;
 
 module.exports.add = async (req, res, next) => {
     try {

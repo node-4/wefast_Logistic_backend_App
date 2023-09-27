@@ -12,25 +12,11 @@ exports.login = async (phoneNumber) => {
         if (!driver) {
             driver = new DriverModel({ phone_number: phoneNumber });
         }
-
         const otp = await generateOTP(6);
-        driver.otp = {
-            magnitude: otp,
-            type: 'login'
-        };
-
+        driver.otp = { magnitude: otp, type: 'login' };
         await driver.save();
-
-        await WalletModel.updateOne({ user: driver._id }, {
-            user: driver._id,
-            user_type: "driver"
-        }, { upsert: true, setDefaultsOnInsert: true });
-
-        await sendSms({
-            body: `otp for we fast is ${otp}`,
-            phoneNumber: `${driver.country_code}${driver.phone_number}`
-        });
-
+        await WalletModel.updateOne({ user: driver._id }, { user: driver._id, user_type: "driver" }, { upsert: true, setDefaultsOnInsert: true });
+        await sendSms({ body: `otp for we fast is ${otp}`, phoneNumber: `${driver.country_code}${driver.phone_number}` });
         return;
     } catch (error) {
         throw error;
@@ -39,34 +25,16 @@ exports.login = async (phoneNumber) => {
 
 exports.loginOtpVerification = async (phoneNumber, otp) => {
     try {
-        const driver = await DriverModel.findOne({
-            phone_number: phoneNumber,
-            "otp.magnitude": otp
-        }).select("+otp");
-
+        const driver = await DriverModel.findOne({ phone_number: phoneNumber, "otp.magnitude": otp }).select("+otp");
         if (!driver) {
             throw new ValidationError('invalid Otp');
         }
-
-        const isValidOtp = await verifyOTP({
-            created: driver.otp.created,
-            userOTP: otp,
-            magnitude: driver.otp.magnitude,
-            reqOTPType: 'login',
-            type: driver.otp.type
-        });
-
+        const isValidOtp = await verifyOTP({ created: driver.otp.created, userOTP: otp, magnitude: driver.otp.magnitude, reqOTPType: 'login', type: driver.otp.type });
         if (!isValidOtp) {
             throw new ValidationError('invalid Otp');
         }
-
         const loginToken = await generateToken(driver._id, 'login');
-
-        return {
-            loginToken,
-            areDocumentsUploaded: !!driver.are_documents_uploaded,
-            isVehicleRegistered: !!driver.is_vehicle_registered
-        };
+        return { loginToken, areDocumentsUploaded: !!driver.are_documents_uploaded, isVehicleRegistered: !!driver.is_vehicle_registered };
     } catch (error) {
         throw error;
     }
@@ -75,13 +43,10 @@ exports.loginOtpVerification = async (phoneNumber, otp) => {
 exports.uploadProfileImage = async (driverId, imageUrl) => {
     try {
         const driver = await DriverModel.findById(driverId);
-
         if (!driver) {
             throw new ValidationError('invalid driverId');
         }
-
         driver.profile_image = imageUrl;
-
         await driver.save();
         return;
     } catch (error) {
@@ -95,7 +60,6 @@ exports.updateDriverLicense = async (driverId, licenseImage, licenseNumber) => {
         if (!driver) {
             throw new ValidationError('invalid driverId');
         }
-
         driver.driver_license = licenseImage;
         driver.driver_license_number = licenseNumber;
         driver.are_documents_uploaded = true;
@@ -111,25 +75,17 @@ exports.updateAadhaarOrVoter = async (driverId, idCardImages, idCardNumber) => {
         if (!driver) {
             throw new ValidationError('invalid driverId');
         }
-
         driver.aadhaar_or_voter_card = idCardImages;
         driver.aadhaar_or_voter_card_number = idCardNumber;
         await driver.save();
-
     } catch (error) {
         throw error;
     }
 };
-
 exports.getAllDrivers = async (page) => {
     try {
         const drivers = await DriverModel.find({}).sort({ createdAt: -1 }).skip(page).limit(10).lean();
-
-        const driverResponse = drivers.map((driver) => {
-            delete driver.__v;
-            return camelcaseKeys(driver);
-        });
-
+        const driverResponse = drivers.map((driver) => { delete driver.__v; return camelcaseKeys(driver); });
         return driverResponse;
     } catch (error) {
         throw error;
@@ -139,7 +95,6 @@ exports.getAllDrivers = async (page) => {
 exports.getDriverProfile = async (driverId) => {
     try {
         const driverProfile = await DriverModel.findById(driverId).select("name profile_image is_vehicle_registered are_documents_uploaded");
-
         return camelcaseKeys(driverProfile.toObject());
     } catch (error) {
         throw error;

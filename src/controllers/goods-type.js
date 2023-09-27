@@ -4,10 +4,7 @@ const addGoodsType = async (req, res, next) => {
     try {
         const goodsType = await goodsTypeService.addGoodsType(req.body);
 
-        return res.status(201).json({
-            msg: 'goods type added',
-            data: { goodsType }
-        });
+        return res.status(200).json(goodsType);
     } catch (error) {
         next(error);
     }
@@ -19,7 +16,7 @@ const getAllGoodsTypes = async (req, res, next) => {
 
         return res.status(200).json({
             msg: 'goods types',
-            data: { goodsTypes }
+            data: goodsTypes
         });
     } catch (error) {
         next(error);
@@ -44,7 +41,7 @@ const updateGoodsType = async (req, res, next) => {
 
         return res.status(200).json({
             msg: 'update goods type',
-            data: { goodsType }
+            data: goodsType
         });
     } catch (error) {
         next(error);

@@ -1,6 +1,7 @@
 const { NotificationModel, DriverModel, UserModel } = require("../models/index.js");
 const { ValidationError } = require("../errors/index.js");
 const camelcaseKeys = require("camelcase-keys");
+const { login } = require("./driver.js");
 
 
 exports.sendNotificationToDrivers = async (
@@ -51,7 +52,7 @@ exports.getDriversNotification = async (driverId) => {
   try {
     const driver = await DriverModel.findById(driverId);
     if (!driver) {
-      throw new ValidationError("invalid driverId");
+      return { status: 404, message: "invalid driverId." }
     }
 
     const notifications = await NotificationModel.find({ receiver: driverId })
@@ -75,7 +76,7 @@ exports.getUsersNotification = async (userId) => {
   try {
     const user = await UserModel.findById(userId);
     if (!user) {
-      throw new ValidationError("invalid userId");
+      return { status: 404, message: "invalid userId." }
     }
 
     const notifications = await NotificationModel.find({ receiver: userId })
@@ -103,7 +104,7 @@ exports.deleteNotification = async (receiverId, notificationId) => {
     });
 
     if (!notification) {
-      throw new ValidationError("invalid notificationId");
+      return { status: 404, message: "invalid notificationId." }
     }
 
     await NotificationModel.findByIdAndDelete(notificationId);

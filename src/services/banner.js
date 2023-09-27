@@ -1,5 +1,4 @@
-const { BannerModel } = require('../models/index.js');
-
+const BannerModel = require("../models/banners.js");
 const addBanner = async (bannerImage) => {
     try {
         const banner = new BannerModel({ image: bannerImage });

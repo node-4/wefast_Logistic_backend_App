@@ -1,4 +1,7 @@
-const { BookingModel, VehicleModel, WalletModel, VehicleTypeModel, } = require("../models/index.js");
+const BookingModel = require("../models/booking");
+const VehicleModel = require("../models/vehicle");
+const WalletModel = require("../models/wallet");
+const VehicleTypeModel = require('../models/vehicle-type'); // Adjust the path as needed
 const { ValidationError } = require("../errors/index.js");
 const snakecaseKeys = require("snakecase-keys");
 const camelcaseKeys = require("camelcase-keys");
@@ -13,12 +16,12 @@ exports.createBooking = async (userId, bookingPayload) => {
     console.log(userId);
     const estimatedPrice = await getEstimatedPrice(
       {
-        lng: bookingPayload.pickupLocation.coordinates[0],
-        lat: bookingPayload.pickupLocation.coordinates[1],
+        lng: bookingPayload.pickupLocation[0],
+        lat: bookingPayload.pickupLocation[1],
       },
       {
-        lng: bookingPayload.dropLocation.coordinates[0],
-        lat: bookingPayload.dropLocation.coordinates[1],
+        lng: bookingPayload.dropLocation[0],
+        lat: bookingPayload.dropLocation[1],
       },
       bookingPayload.vehicleType
     );
@@ -273,7 +276,6 @@ exports.getEstimatedPrice = async (origin, destination, vehicleTypeId) => {
     ]);
 
     return vehicleType.price_per_km * distance;
-    return 503.5;
   } catch (error) {
     throw error;
   }
@@ -311,18 +313,13 @@ const getDistance = async (origin, destination) => {
         units: "metric",
       },
     };
-
-    const distanceMatrixResponse = await googleMapsClient.distancematrix(
-      distanceMatrixRequest
-    );
+    const distanceMatrixResponse = await googleMapsClient.distancematrix(distanceMatrixRequest);
 
     console.log(
       "distance: ",
       distanceMatrixResponse.data.rows[0].elements[0].distance.value
     );
-    return (
-      distanceMatrixResponse.data.rows[0].elements[0].distance.value / 1000
-    );
+    return (distanceMatrixResponse.data.rows[0].elements[0].distance.value / 1000);
   } catch (error) {
     console.log(error);
   }
@@ -406,3 +403,4 @@ const deleteBookingIfNotAccepted = (bookingId) => {
     );
   };
 };
+const { getEstimatedPrice } = module.exports;
