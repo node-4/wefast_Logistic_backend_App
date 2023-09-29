@@ -18,17 +18,30 @@ const BookingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'vehicle_type'
     },
+    // pickup_location: {
+    //     type: GeoJson,
+    //     required: true
+    // },
     pickup_location: {
-        type: GeoJson,
-        required: true
+        type: {
+            type: String,
+            default: "Point"
+        },
+        coordinates: [100, 45]
+    },
+    drop_location: {
+        type: {
+            type: String,
+            default: "Point"
+        }, coordinates: [100, 45]
     },
     pickup_address: {
         type: String
     },
-    drop_location: {
-        type: GeoJson,
-        required: true
-    },
+    // drop_location: {
+    //     type: GeoJson,
+    //     required: true
+    // },
     drop_address: {
         type: String
     },

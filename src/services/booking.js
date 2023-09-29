@@ -13,7 +13,6 @@ const googleMapsClient = new Client({});
 
 exports.createBooking = async (userId, bookingPayload) => {
   try {
-    console.log(userId);
     const estimatedPrice = await getEstimatedPrice(
       {
         lng: bookingPayload.pickupLocation[0],
@@ -268,13 +267,10 @@ exports.completeBooking = async (bookingId) => {
 
 exports.getEstimatedPrice = async (origin, destination, vehicleTypeId) => {
   try {
-    console.log("entered getestimatedprice");
-    console.log(origin, destination, vehicleTypeId);
     const [vehicleType, distance] = await Promise.all([
       VehicleTypeModel.findById(vehicleTypeId),
       getDistance(origin, destination),
     ]);
-
     return vehicleType.price_per_km * distance;
   } catch (error) {
     throw error;
@@ -305,6 +301,8 @@ exports.getEstimatedPricesForAllVehicleTypes = async (origin, destination) => {
 
 const getDistance = async (origin, destination) => {
   try {
+    return 50;
+
     const distanceMatrixRequest = {
       params: {
         origins: [origin],
@@ -315,10 +313,7 @@ const getDistance = async (origin, destination) => {
     };
     const distanceMatrixResponse = await googleMapsClient.distancematrix(distanceMatrixRequest);
 
-    console.log(
-      "distance: ",
-      distanceMatrixResponse.data.rows[0].elements[0].distance.value
-    );
+    console.log("distance: ", distanceMatrixResponse.data.rows[0].elements[0].distance.value);
     return (distanceMatrixResponse.data.rows[0].elements[0].distance.value / 1000);
   } catch (error) {
     console.log(error);

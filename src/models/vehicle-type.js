@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const VehicleTypeSchema = new mongoose.Schema({
+const vehicleTypeSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -41,7 +41,5 @@ const VehicleTypeSchema = new mongoose.Schema({
     toObject: { versionKey: false },
     toJSON: { versionKey: false }
 });
-
-module.exports = {
-    VehicleTypeModel: mongoose.model('vehicle_type', VehicleTypeSchema)
-};
+const VehicleTypeModel = mongoose.model('vehicle_type', vehicleTypeSchema);
+module.exports = VehicleTypeModel;
