@@ -29,7 +29,4 @@ const VehicleSchema = new mongoose.Schema({
     timestamps: true // Automatically adds 'createdAt' and 'updatedAt' fields to documents
 });
 
-// Create and export the Mongoose model for the Vehicle collection
-module.exports = {
-    VehicleModel: mongoose.model('vehicle', VehicleSchema)
-};
+module.exports = mongoose.model("vehicle", VehicleSchema);

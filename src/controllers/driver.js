@@ -3,9 +3,7 @@ exports.login = async (req, res, next) => {
     try {
         const result = await driverService.login(req.body.phoneNumber);
 
-        return res.status(200).json({
-            msg: 'otp sent to phone number'
-        });
+        return res.status(200).json({ msg: 'otp sent to phone number', data: result });
     } catch (error) {
         next(error);
     }

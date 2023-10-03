@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const schema = mongoose.Schema;
-// const mongoosePaginate = require('mongoose-paginate');
-const DocumentSchema = schema({
+const GeoJson = require('./schemas/geo-json.js');
+const BookingSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
@@ -20,27 +19,28 @@ const DocumentSchema = schema({
         ref: 'vehicle_type'
     },
     pickup_location: {
-        type: {
-            type: String,
-            default: "Point"
-        },
-        coordinates: {
-            type: [Number],
-            default: [0, 0]
-        },
+        type: GeoJson,
+        required: true
     },
-    drop_location: {
-        type: {
-            type: String,
-            default: "Point"
-        },
-        coordinates: {
-            type: [Number],
-            default: [0, 0]
-        },
-    },
+    // pickup_location: {
+    //     type: {
+    //         type: String,
+    //         default: "Point"
+    //     },
+    //     coordinates: [100, 45]
+    // },
+    // drop_location: {
+    //     type: {
+    //         type: String,
+    //         default: "Point"
+    //     }, coordinates: [100, 45]
+    // },
     pickup_address: {
         type: String
+    },
+    drop_location: {
+        type: GeoJson,
+        required: true
     },
     drop_address: {
         type: String
@@ -86,7 +86,6 @@ const DocumentSchema = schema({
     drop_date: {
         type: Date
     },
- 
     status: {
         type: String,
         enum: ['completed', 'cancelled', 'on_going', 'unconfirmed', 'confirmed', 'timeout_cancelled'],
@@ -100,16 +99,6 @@ const DocumentSchema = schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'coupon'
     },
-    amount: {
-        type: Number
-    },
-    payment_mode: {
-        type: String,
-        enum: ["cash", "wallet"]
-      },
-    bookingId: {
-        type: String
-    },
     labour_needed: {
         type: Boolean,
         default: false
@@ -118,7 +107,18 @@ const DocumentSchema = schema({
         type: String,
         enum: ['sender', 'receiver']
     },
-}, { timestamps: true })
-// DocumentSchema.plugin(mongoosePaginate);
-module.exports = mongoose.model("booking", DocumentSchema);
+    payment_mode: {
+        type: String,
+        enum: ["cash", "wallet"]
+    },
+    amount: {
+        type: Number,
+        default: 503.20
+    }
+}, {
+    timestamps: true,
+    toObject: { versionKey: false },
+    toJSON: { versionKey: false }
+})
 
+module.exports = mongoose.model('booking', BookingSchema);

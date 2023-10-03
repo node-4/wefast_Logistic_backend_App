@@ -1,4 +1,6 @@
-const { DriverModel, WalletModel } = require('../models/index.js');
+const BookingModel = require("../models/booking");
+const DriverModel = require("../models/driver.js");
+const WalletModel = require("../models/wallet");
 const { generateOTP, verifyOTP } = require('../helpers/otp.js');
 const { sendSms } = require('../helpers/sms.js');
 const { ValidationError } = require('../errors/index.js');
@@ -15,9 +17,9 @@ exports.login = async (phoneNumber) => {
         const otp = await generateOTP(6);
         driver.otp = { magnitude: otp, type: 'login' };
         await driver.save();
-        await WalletModel.updateOne({ user: driver._id }, { user: driver._id, user_type: "driver" }, { upsert: true, setDefaultsOnInsert: true });
-        await sendSms({ body: `otp for we fast is ${otp}`, phoneNumber: `${driver.country_code}${driver.phone_number}` });
-        return;
+        await WalletModel.findOneAndUpdate({ user: driver._id }, { user: driver._id, user_type: "driver" }, { upsert: true, setDefaultsOnInsert: true });
+        // await sendSms({ body: `otp for we fast is ${otp}`, phoneNumber: `${driver.country_code}${driver.phone_number}` });
+        return driver;
     } catch (error) {
         throw error;
     }

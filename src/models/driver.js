@@ -59,4 +59,4 @@ const DriverSchema = new mongoose.Schema({
     toObject: { versionKey: false },
     toJSON: { versionKey: false }
 });
-module.exports = { DriverModel: mongoose.model('driver', DriverSchema) };
+module.exports = mongoose.model("driver", DriverSchema);

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const tokenHelpers = require('../helpers/token.js');
-const { DriverModel, AdminModel, UserModel } = require('../models/index.js');
+const DriverModel = require("../models/driver.js");
+const { AdminModel, UserModel } = require('../models/index.js');
 const { AuthError } = require('../errors/index.js');
 
 async function user(req, res, next) {
