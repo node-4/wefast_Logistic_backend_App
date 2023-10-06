@@ -12,18 +12,10 @@ module.exports.getWallet = async (req, res, next) => {
     next(error);
   }
 };
-
 module.exports.createOrderToAddBalance = async (req, res, next) => {
   try {
-    const order = await walletService.createOrderToAddBalance(
-      req.user._id,
-      req.body.amount
-    );
-
-    return  res.status(200).json({
-      msg: "order for adding money to wallet",
-      data: order
-    })
+    const order = await walletService.addMoneyToWallet(req.user._id, req.body.amount);
+    return res.status(200).json({ msg: "adding money to wallet", data: order })
   } catch (error) {
     next(error);
   }
@@ -32,10 +24,7 @@ module.exports.createOrderToAddBalance = async (req, res, next) => {
 module.exports.payout = async (req, res, next) => {
   try {
     await walletService.payout(req.user._id);
-
-    return res.status(200).json({
-      msg: "payout request sent"
-    })
+    return res.status(200).json({ msg: "payout request sent" })
   } catch (error) {
     next(error);
   }

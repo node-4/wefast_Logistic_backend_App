@@ -33,12 +33,25 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    refferalCode: { type: String, },
+    refferUserId: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+    joinUser: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
     delivery_for_business: {
       type: Boolean,
     },
     goods_type: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "good_type",
+    },
+    location: {
+      type: {
+        type: String,
+        default: "Point"
+      },
+      coordinates: {
+        type: [Number],
+        default: [0, 0]
+      },
     },
     deliveries_per_week: {
       type: new mongoose.Schema(

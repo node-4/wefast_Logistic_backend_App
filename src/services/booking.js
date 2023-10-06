@@ -91,11 +91,7 @@ exports.createScheduledBooking = async (userId, bookingPayload) => {
 };
 exports.getAllBookingsOfUser = async (userId, query = ["completed", "cancelled", "on_going", "confirmed"]) => {
   try {
-    const bookings = await BookingModel.find({ user: userId, status: { $in: query }, }).sort({ createdAt: -1 })
-      .populate("driver", "name")
-      .populate({ path: "vehicle_type", select: "name image", model: 'vehicle_type' })
-      .lean();
-    console.log(bookings);
+    const bookings = await BookingModel.find({ user: userId, status: { $in: query }, }).sort({ createdAt: -1 }).populate("driver", "name").populate({ path: "vehicle_type", select: "name image", model: 'vehicle_type' }).lean();
     const bookingResponse = bookings.map((booking) => {
       delete booking.__v;
       return booking;
@@ -108,16 +104,10 @@ exports.getAllBookingsOfUser = async (userId, query = ["completed", "cancelled",
 };
 exports.cancelBooking = async (userId, bookingId) => {
   try {
-    const booking = await BookingModel.findOne({
-      user: userId,
-      _id: bookingId,
-      status: { $in: ["confirmed", "unconfirmed"] },
-    });
-
+    const booking = await BookingModel.findOne({ user: userId, _id: bookingId, status: { $in: ["confirmed", "unconfirmed"] }, });
     if (!booking) {
       throw new ValidationError("invalid bookingId");
     }
-
     booking.status = "cancelled";
     // await removeBookingFromRedis(bookingId);
     await booking.save();

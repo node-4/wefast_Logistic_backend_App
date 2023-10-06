@@ -1,25 +1,25 @@
 const userService = require('../services/index.js').userService;
-const register = async (req, res, next) => {
-    try {
-        await userService.register(req.body.phoneNumber);
+// const register = async (req, res, next) => {
+//     try {
+//         await userService.register(req.body.phoneNumber);
 
-        return res.status(201).json({ msg: `otp sent to ${req.body.phoneNumber}` });
-    } catch (error) {
-        next(error);
-    }
-};
-const registrationOtpVerification = async (req, res, next) => {
-    try {
-        const result = await userService.registrationOtpVerification(req.body.phoneNumber, req.body.otp);
+//         return res.status(201).json({ msg: `otp sent to ${req.body.phoneNumber}` });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+// const registrationOtpVerification = async (req, res, next) => {
+//     try {
+//         const result = await userService.registrationOtpVerification(req.body.phoneNumber, req.body.otp);
 
-        return res.status(200).json({
-            msg: 'registration otp successfully verified',
-            data: result
-        });
-    } catch (error) {
-        next(error);
-    }
-};
+//         return res.status(200).json({
+//             msg: 'registration otp successfully verified',
+//             data: result
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 const login = async (req, res, next) => {
     try {
         const result = await userService.login(req.body.phoneNumber);
@@ -84,14 +84,24 @@ const updateDetails = async (req, res, next) => {
         next(error);
     }
 };
+const updateLocation = async (req, res) => {
+    try {
+        let result = await userService.updateLocation(req.user._id, req.body.currentLat, req.body.currentLong);
+        return res.status(200).send({ status: 200, message: "Location update successfully.", data: result });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ status: 500, message: "Server error" + error.message });
+    }
+};
 module.exports = {
-    register,
-    registrationOtpVerification,
+    // register,
+    // registrationOtpVerification,
     login,
     loginOtpVerification,
     updateDetails,
     updateDeliveryPreferences,
     updateUserName,
     getAllUsers,
-    getUserInfo
+    getUserInfo,
+    updateLocation
 };

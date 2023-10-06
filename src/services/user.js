@@ -1,4 +1,5 @@
-const { UserModel, WalletModel } = require('../models/index.js');
+const { WalletModel } = require('../models/index.js');
+const { UserModel } = require('../models/index.js');
 const { generateOTP, verifyOTP } = require('../helpers/otp.js');
 const { sendSms } = require('../helpers/sms.js');
 const { ValidationError } = require('../errors/index.js');
@@ -6,85 +7,92 @@ const { generateToken } = require('../helpers/token.js');
 const snakecaseKeys = require('snakecase-keys');
 const camelcaseKeys = require('camelcase-keys');
 
-exports.register = async (phoneNumber) => {
-    try {
-        const userExist = await UserModel.findOne({ phone_number: phoneNumber });
-        if (userExist) {
-            throw new ValidationError('user with phone number already exists');
-        }
-        const otp = await generateOTP(6);
-        let otp1 = {
-            magnitude: otp,
-            type: 'registration'
-        }
-        let obj = {
-            phone_number: phoneNumber,
-            otp: otp1
-        }
-        const user = await UserModel.create(obj);
-        if (user) {
-            let obj2 = {
-                user: user._id,
-                user_type: "user"
-            }
-            // await WalletModel.create(obj2)
-            // await sendSms({
-            //     body: `otp is: ${otp}`,
-            //     phoneNumber: `${user.country_code}${user.phone_number}`
-            // })
-            return user;
-        }
-    } catch (error) {
-        throw error;
-    }
-}
-exports.registrationOtpVerification = async (phoneNumber, otp) => {
-    try {
-        const user = await UserModel.findOne({
-            phone_number: phoneNumber,
-            "otp.magnitude": otp
-        }).select("+otp");
+// exports.register = async (phoneNumber) => {
+//     try {
+//         const userExist = await UserModel.findOne({ phone_number: phoneNumber });
+//         if (userExist) {
+//             throw new ValidationError('user with phone number already exists');
+//         }
+//         const otp = await generateOTP(6);
+//         let otp1 = {
+//             magnitude: otp,
+//             type: 'registration'
+//         }
+//         let obj = {
+//             phone_number: phoneNumber,
+//             otp: otp1
+//         }
+//         const user = await UserModel.create(obj);
+//         if (user) {
+//             let obj2 = {
+//                 user: user._id,
+//                 user_type: "user"
+//             }
+//             // await WalletModel.create(obj2)
+//             // await sendSms({
+//             //     body: `otp is: ${otp}`,
+//             //     phoneNumber: `${user.country_code}${user.phone_number}`
+//             // })
+//             return user;
+//         }
+//     } catch (error) {
+//         throw error;
+//     }
+// }
+// exports.registrationOtpVerification = async (phoneNumber, otp) => {
+//     try {
+//         const user = await UserModel.findOne({
+//             phone_number: phoneNumber,
+//             "otp.magnitude": otp
+//         }).select("+otp");
 
-        if (!user) {
-            throw new ValidationError('invalid otp');
-        }
+//         if (!user) {
+//             throw new ValidationError('invalid otp');
+//         }
 
-        const isValidOtp = await verifyOTP({
-            created: user.otp.created,
-            magnitude: user.otp.magnitude,
-            type: user.otp.type,
-            reqOTPType: 'registration',
-            userOTP: otp
-        })
+//         const isValidOtp = await verifyOTP({
+//             created: user.otp.created,
+//             magnitude: user.otp.magnitude,
+//             type: user.otp.type,
+//             reqOTPType: 'registration',
+//             userOTP: otp
+//         })
 
-        if (!isValidOtp) {
-            throw new ValidationError('invalid otp');
-        }
+//         if (!isValidOtp) {
+//             throw new ValidationError('invalid otp');
+//         }
 
-        const token = await generateToken(user._id, 'login');
+//         const token = await generateToken(user._id, 'login');
 
-        return {
-            loginToken: token,
-            signupProcessCompleted: user.signup_process_complete,
-            deliveryprefrencesCompleted: user.delivery_prefrences_completed
-        };
-    } catch (error) {
-        throw error;
-    }
-}
+//         return {
+//             loginToken: token,
+//             signupProcessCompleted: user.signup_process_complete,
+//             deliveryprefrencesCompleted: user.delivery_prefrences_completed
+//         };
+//     } catch (error) {
+//         throw error;
+//     }
+// }
 exports.login = async (phoneNumber) => {
     try {
         const user = await UserModel.findOne({ phone_number: phoneNumber });
         if (!user) {
-            throw new ValidationError('no user with phone number registered');
+            const otp = await generateOTP(6);
+            let otp1 = { magnitude: otp, type: 'registration' }
+            let obj = { phone_number: phoneNumber, otp: otp1 }
+            const user1 = await UserModel.create(obj);
+            if (user1) {
+                let obj2 = {
+                    user: user1._id,
+                    user_type: "user"
+                }
+                await WalletModel.create(obj2)
+                return user1;
+            }
         }
         const otp = await generateOTP(6);
         user.otp = { magnitude: otp, type: 'login' }
         await user.save();
-        // await sendSms({
-        //     body: `otp is ${otp}`,
-        //     phoneNumber: `${user.country_code}${user.phone_number}`
-        // });
         return user;
     } catch (error) {
         throw error;
@@ -122,8 +130,8 @@ exports.updateUserName = async (userId, name) => {
 }
 exports.getUserInfo = async (userId) => {
     try {
-        const user = (await UserModel.findById(userId).select({ name: 1, phone_number: 1, profile_image: 1 }))?.toObject();
-        return camelcaseKeys(user);
+        const user = await UserModel.findById(userId)
+        return user;
     } catch (error) {
         throw error;
     }
@@ -162,3 +170,21 @@ exports.updateDetails = async (userId, updatePayload) => {
         throw error;
     }
 }
+exports.updateLocation = async (userId, currentLat, currentLong) => {
+    try {
+        const user = await UserModel.findOne({ _id: userId, });
+        if (!user) {
+            throw new ValidationError('invalid userId');
+        } else {
+            let currentLocation;
+            if (currentLat || currentLong) {
+                coordinates = [parseFloat(currentLat), parseFloat(currentLong)]
+                currentLocation = { type: "Point", coordinates };
+            }
+            let update = await UserModel.findByIdAndUpdate({ _id: user._id }, { $set: { location: currentLocation } }, { new: true });
+            return update;
+        }
+    } catch (error) {
+        throw error;
+    }
+};

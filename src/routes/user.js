@@ -4,8 +4,8 @@ const auth = require('../middlewares/auth.js');
 
 
 module.exports = (app) => {
-        app.post('/user/register', userValidator.bodyPhoneNumber, userController.register);
-        app.post('/user/registration-otp', userValidator.otpVerification, userController.registrationOtpVerification);
+        // app.post('/user/register', userValidator.bodyPhoneNumber, userController.register);
+        // app.post('/user/registration-otp', userValidator.otpVerification, userController.registrationOtpVerification);
         app.get('/user/getProfile', auth.user, userController.getUserInfo);
         app.post('/user/login', userValidator.bodyPhoneNumber, userController.login);
         app.post('/user/login-otp', userValidator.otpVerification, userController.loginOtpVerification);
@@ -13,4 +13,5 @@ module.exports = (app) => {
         app.get('/user/all', auth.admin, userController.getAllUsers);
         app.put('/user/delivery-preference', auth.user, userValidator.deliveryPreference, userController.updateDeliveryPreferences);
         app.put('/user/update', auth.user, userValidator.updateDetails, userController.updateDetails);
+        app.put('/user/update/Location', auth.user, userController.updateLocation);
 };

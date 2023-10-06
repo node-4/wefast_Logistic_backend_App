@@ -1,5 +1,4 @@
 const couponService = require('../services/index.js').couponService;
-
 const createCoupon = async (req, res, next) => {
     try {
         const coupon = await couponService.createCoupon(req.body);
@@ -8,7 +7,6 @@ const createCoupon = async (req, res, next) => {
         next(error);
     }
 };
-
 const getAllCoupons = async (req, res, next) => {
     try {
         const coupons = await couponService.getAllCoupons();
@@ -18,7 +16,6 @@ const getAllCoupons = async (req, res, next) => {
         next(error);
     }
 };
-
 const getAllValidCoupons = async (req, res, next) => {
     try {
         const coupons = await couponService.getValidCoupons();
@@ -31,7 +28,6 @@ const getAllValidCoupons = async (req, res, next) => {
         next(error);
     }
 };
-
 const deleteCoupon = async (req, res, next) => {
     try {
         await couponService.deleteCoupon(req.params.couponId);
@@ -43,7 +39,6 @@ const deleteCoupon = async (req, res, next) => {
         next(error);
     }
 };
-
 const checkValidity = async (req, res, next) => {
     try {
         const valid = await couponService.checkValidity(req.params.couponId);
@@ -56,7 +51,6 @@ const checkValidity = async (req, res, next) => {
         next(error);
     }
 };
-
 const updateCoupon = async (req, res, next) => {
     try {
         const coupon = await couponService.updateCoupon(req.params.couponId, req.body);
@@ -69,12 +63,4 @@ const updateCoupon = async (req, res, next) => {
         next(error);
     }
 };
-
-module.exports = {
-    createCoupon,
-    getAllCoupons,
-    getAllValidCoupons,
-    deleteCoupon,
-    checkValidity,
-    updateCoupon
-};
+module.exports = { createCoupon, getAllCoupons, getAllValidCoupons, deleteCoupon, checkValidity, updateCoupon };

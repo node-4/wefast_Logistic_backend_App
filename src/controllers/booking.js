@@ -28,11 +28,7 @@ const getAllBookingsOfUser = async (req, res, next) => {
             userId = req.user._id;
         }
         const bookings = await bookingService.getAllBookingsOfUser(userId, req.query.status);
-
-        return res.status(200).json({
-            msg: 'bookings',
-            data: bookings
-        });
+        return res.status(200).json({msg: 'bookings',data: bookings});
     } catch (error) {
         next(error);
     }

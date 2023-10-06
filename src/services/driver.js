@@ -1,6 +1,6 @@
 const BookingModel = require("../models/booking");
 const DriverModel = require("../models/driver.js");
-const WalletModel = require("../models/wallet");
+const { WalletModel } = require('../models/index.js');
 const { generateOTP, verifyOTP } = require('../helpers/otp.js');
 const { sendSms } = require('../helpers/sms.js');
 const { ValidationError } = require('../errors/index.js');
