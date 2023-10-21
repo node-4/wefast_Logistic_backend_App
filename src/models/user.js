@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema(
     },
     profile_image: {
       type: String,
+      default: "",
     },
     signup_process_complete: {
       type: Boolean,
