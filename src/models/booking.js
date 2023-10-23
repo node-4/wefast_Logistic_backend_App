@@ -80,13 +80,16 @@ const DocumentSchema = schema({
         enum: ['now', 'later'],
         default: 'now'
     },
+    orderType: {
+        type: String,
+        enum: ['booking', 'Load'],
+    },
     pickup_date: {
         type: Date
     },
     drop_date: {
         type: Date
     },
- 
     status: {
         type: String,
         enum: ['completed', 'cancelled', 'on_going', 'unconfirmed', 'confirmed', 'timeout_cancelled'],
@@ -106,7 +109,7 @@ const DocumentSchema = schema({
     payment_mode: {
         type: String,
         enum: ["cash", "wallet"]
-      },
+    },
     bookingId: {
         type: String
     },

@@ -28,7 +28,24 @@ const getAllBookingsOfUser = async (req, res, next) => {
             userId = req.user._id;
         }
         const bookings = await bookingService.getAllBookingsOfUser(userId, req.query.status);
-        return res.status(200).json({msg: 'bookings',data: bookings});
+        return res.status(200).json({ msg: 'bookings', data: bookings });
+    } catch (error) {
+        next(error);
+    }
+};
+const getAllloadBookingsOfUser = async (req, res, next) => {
+    try {
+        if (req.query.status && !Array.isArray(req.query.status)) {
+            req.query.status = [req.query.status];
+        }
+        let userId;
+        if (req.user.role == 'admin') {
+            userId = req.params.userId;
+        } else {
+            userId = req.user._id;
+        }
+        const bookings = await bookingService.getAllloadBookingsOfUser(userId, req.query.status);
+        return res.status(200).json({ msg: 'bookings', data: bookings });
     } catch (error) {
         next(error);
     }
@@ -178,6 +195,7 @@ module.exports = {
     getBookingSuggestion,
     getBookingById,
     pickUpCheckIn,
+    getAllloadBookingsOfUser,
     completeBooking,
     getEstimatedPrice,
     getEstimatedPricesForAllVehicleTypes

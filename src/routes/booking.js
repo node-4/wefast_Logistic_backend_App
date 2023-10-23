@@ -6,6 +6,7 @@ const auth = require('../middlewares/auth.js');
 // const router = express.Router();
 module.exports = (app) => {
     app.get('/booking/', auth.user, bookingController.getAllBookingsOfUser);
+    app.get('/loadbooking', auth.user, bookingController.getAllloadBookingsOfUser);
     app.post('/booking', auth.user, bookingController.createBooking);
     app.post('/booking/schedule', auth.user, bookingController.createScheduledBooking);
     app.post("/booking/estimated-price", bookingController.getEstimatedPrice);

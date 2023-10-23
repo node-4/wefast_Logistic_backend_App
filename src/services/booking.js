@@ -28,6 +28,12 @@ exports.createBooking = async (userId, bookingPayload) => {
       coordinates = [parseFloat(bookingPayload.dropLocation[0]), parseFloat(bookingPayload.dropLocation[1])]
       dropLocation = { type: "Point", coordinates };
     }
+    let orderType;
+    if (bookingPayload.loadWeight != (null || undefined)) {
+      orderType = 'Load'
+    } else {
+      orderType = 'booking'
+    }
     let obj = {
       user: userId.toString(),
       vehicle_type: bookingPayload.vehicleType,
@@ -42,6 +48,7 @@ exports.createBooking = async (userId, bookingPayload) => {
       goods_type: bookingPayload.goodsType,
       labour_needed: bookingPayload.labourNeeded,
       paid_by: bookingPayload.paidBy,
+      orderType: orderType,
       amount: estimatedPrice.toFixed(2),
     }
     let booking = await BookingModel(obj).save();
@@ -91,7 +98,7 @@ exports.createScheduledBooking = async (userId, bookingPayload) => {
 };
 exports.getAllBookingsOfUser = async (userId, query = ["completed", "cancelled", "on_going", "confirmed"]) => {
   try {
-    const bookings = await BookingModel.find({ user: userId, status: { $in: query }, }).sort({ createdAt: -1 }).populate("driver", "name").populate({ path: "vehicle_type", select: "name image", model: 'vehicle_type' }).lean();
+    const bookings = await BookingModel.find({ user: userId, orderType: "booking", status: { $in: query }, }).sort({ createdAt: -1 }).populate("driver", "name").populate({ path: "vehicle_type", select: "name image", model: 'vehicle_type' }).lean();
     const bookingResponse = bookings.map((booking) => {
       delete booking.__v;
       return booking;
@@ -158,14 +165,11 @@ exports.getEstimatedPricesForAllVehicleTypes = async (lat1, lon1, lat2, lon2,) =
       VehicleTypeModel.find({}).lean(),
       getDistance(lat1, lon1, lat2, lon2,),
     ]);
-
     const vehicleTypesWithPrice = vehicleTypes.map((vehicleType) => {
       vehicleType.estimatedPrice = (vehicleType.price_per_km * distance).toFixed(2);
       return camelcaseKeys(vehicleType)
     })
-
     return vehicleTypesWithPrice;
-
   } catch (error) {
     throw error;
   }
@@ -241,7 +245,18 @@ exports.getBookingsOfDriver = async (driverId, query = ["completed", "cancelled"
     throw error;
   }
 };
-
+exports.getAllloadBookingsOfUser = async (userId, query = ["completed", "cancelled", "on_going", "confirmed"]) => {
+  try {
+    const bookings = await BookingModel.find({ user: userId, orderType: "Load", status: { $in: query }, }).sort({ createdAt: -1 }).populate("driver", "name").populate({ path: "vehicle_type", select: "name image", model: 'vehicle_type' }).lean();
+    const bookingResponse = bookings.map((booking) => {
+      delete booking.__v;
+      return booking;
+    });
+    return bookingResponse
+  } catch (error) {
+    throw error;
+  }
+};
 /////////////////////////////////////////////////////new function ///////////////
 
 const getDistance = async (lat1, lon1, lat2, lon2) => {

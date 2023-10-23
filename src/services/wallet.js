@@ -83,7 +83,6 @@ const getBalance = async (userId) => {
     if (!wallet) {
       throw new ValidationError("invalid userId");
     }
-
     return camelcaseKeys(wallet.toObject());
   } catch (error) {
     throw error;
