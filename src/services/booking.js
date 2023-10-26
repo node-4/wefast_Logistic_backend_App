@@ -98,7 +98,9 @@ exports.createScheduledBooking = async (userId, bookingPayload) => {
 };
 exports.getAllBookingsOfUser = async (userId, query = ["completed", "cancelled", "on_going", "confirmed"]) => {
   try {
+    console.log("userId", userId);
     const bookings = await BookingModel.find({ user: userId, orderType: "booking", status: { $in: query }, }).sort({ createdAt: -1 }).populate("driver", "name").populate({ path: "vehicle_type", select: "name image", model: 'vehicle_type' }).lean();
+    console.log("bookings", bookings);
     const bookingResponse = bookings.map((booking) => {
       delete booking.__v;
       return booking;
