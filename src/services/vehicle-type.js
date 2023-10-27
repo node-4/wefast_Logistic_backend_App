@@ -1,4 +1,5 @@
-const { VehicleTypeModel } = require('../models/index.js');
+// const { VehicleTypeModel } = require('../models/index.js');
+const VehicleTypeModel = require('../models/vehicle-type');
 const { ValidationError } = require('../errors/index.js');
 const camelCaseKeys = require('camelcase-keys');
 const snakeCaseKeys = require('snakecase-keys');
@@ -18,7 +19,6 @@ exports.addvehicleType = async (payload) => {
         const vehicleTypeExist = await VehicleTypeModel.findOne({
             lowercase_name: payload.name.toLowerCase()
         });
-
         if (vehicleTypeExist) {
             throw new ValidationError('vehicle type with name already exists');
         }
