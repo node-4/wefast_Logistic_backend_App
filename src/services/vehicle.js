@@ -80,7 +80,7 @@ exports.getAllVehicles = async (page, vehicleType) => {
         }
 
         const vehicles = await VehicleModel.find(query).sort({ createdAt: -1 }).skip(page)
-            .limit(10).populate("owner", "name").lean();
+            .limit(10).populate("owner", "name").lean().populate('vehicle_type');
 
         const vehicleResponse = vehicles.map((vehicle) => {
             delete vehicle.__v;

@@ -9,4 +9,5 @@ module.exports = (app) => {
         app.get('/vehicle-type', vehicleTypeController.getAllVehicleTypes);
         app.get('/vehicle-type/:vehicleTypeId', vehicleTypeValidator.getVehicleTypeId, vehicleTypeController.getVehicleType);
         app.put('/vehicle-type/:vehicleTypeId', auth.admin, [vehicleTypeValidator.update.vehicleTypeId, vehicleTypeValidator.update.updatePayload], vehicleTypeController.updateVehicleType)
+        app.delete('/vehicle-type/:vehicleTypeId', vehicleTypeValidator.getVehicleTypeId, vehicleTypeController.deleteVehicleType);
 }

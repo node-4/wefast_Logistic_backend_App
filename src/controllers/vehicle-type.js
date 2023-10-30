@@ -52,9 +52,24 @@ const getVehicleType = async (req, res, next) => {
     }
 };
 
+
+const deleteVehicleType = async (req, res, next) => {
+    try {
+        const vehicleType = await vehicleTypeService.deleteVehicleType(req.params.vehicleTypeId);
+
+        return res.status(200).json({
+            msg: 'vehicle type delete SucessFully',
+            data: vehicleType
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     addvehicleType,
     updateVehicleType,
     getAllVehicleTypes,
     getVehicleType,
+    deleteVehicleType
 };

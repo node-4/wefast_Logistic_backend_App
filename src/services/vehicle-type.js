@@ -101,3 +101,20 @@ exports.getVehicletype = async (vehicleTypeId) => {
         throw error;
     }
 }
+
+
+exports.deleteVehicleType = async (vehicleTypeId) => {
+    try {
+        console.log("fmn8fmfdm", vehicleTypeId);
+        const vehicleType = await VehicleTypeModel.findById({ _id: vehicleTypeId });
+        if (!vehicleType) {
+            throw new ValidationError('invalid vehicleTypeId');
+        } else {
+            await vehicleType.remove();
+            return camelCaseKeys(vehicleType);
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
