@@ -1,9 +1,14 @@
-const bookingService = require('../services/index.js').bookingService;
+// const bookingService = require('../services/index.js').bookingService;
+const bookingService = require('../services/booking.js');
+
 
 const createBooking = async (req, res, next) => {
     try {
         let data = await bookingService.createBooking(req.user._id, req.body);
-        return res.status(200).json({ msg: 'booking created', data: data });
+        if(data){
+            console.log("data",data);
+            return res.status(200).json({ msg: 'booking created', data: data });
+        }
     } catch (error) {
         next(error);
     }
@@ -11,7 +16,7 @@ const createBooking = async (req, res, next) => {
 const createScheduledBooking = async (req, res, next) => {
     try {
         await bookingService.createScheduledBooking(req.user._id, req.body);
-        return res.status(200).json({ msg: 'booking created' });
+        return res.status(200).json({ msg: 'booking created', });
     } catch (error) {
         next(error);
     }

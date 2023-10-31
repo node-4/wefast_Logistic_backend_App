@@ -52,6 +52,8 @@ exports.createBooking = async (userId, bookingPayload) => {
       amount: estimatedPrice.toFixed(2),
     }
     let booking = await BookingModel(obj).save();
+    return booking;
+
     // const booking = new BookingModel(
     //   snakecaseKeys({
     //     user: userId.toString(),
