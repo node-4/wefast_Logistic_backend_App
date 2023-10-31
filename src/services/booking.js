@@ -180,7 +180,7 @@ exports.getEstimatedPricesForAllVehicleTypes = async (lat1, lon1, lat2, lon2,) =
 };
 exports.checkBookingStatus = async (userId, bookingId) => {
   try {
-    const bookingStatus = await BookingModel.findOne({ user: userId, _id: bookingId, }).select({ status: 1 })
+    const bookingStatus = await BookingModel.findOne({ user: userId, _id: bookingId, })/*.select({ status: 1 })*/
     if (!bookingStatus) {
       throw new ValidationError("booking not found");
     }
