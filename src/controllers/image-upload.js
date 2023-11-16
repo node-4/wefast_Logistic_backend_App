@@ -9,7 +9,7 @@ async function imageUpload(req, res, next) {
 
         return res.status(200).json({
             data: {
-                image: `${process.env.BASE_URL}public/images/${req.file.filename}`
+                image: req.file.path
             }
         });
     } catch (error) {

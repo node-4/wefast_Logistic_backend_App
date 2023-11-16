@@ -1,11 +1,12 @@
 const BookingModel = require("../models/booking");
 const DriverModel = require("../models/driver.js");
-const { WalletModel } = require('../models/index.js');
+// const { WalletModel } = require('../models/index.js');
 const { generateOTP, verifyOTP } = require('../helpers/otp.js');
 const { sendSms } = require('../helpers/sms.js');
 const { ValidationError } = require('../errors/index.js');
 const { generateToken } = require('../helpers/token.js');
 const camelcaseKeys = require('camelcase-keys');
+const WalletModel = require("../models/wallet.js");
 
 exports.login = async (phoneNumber) => {
     try {
@@ -14,10 +15,20 @@ exports.login = async (phoneNumber) => {
         if (!driver) {
             driver = new DriverModel({ phone_number: phoneNumber });
         }
+        console.log(driver);
         const otp = await generateOTP(6);
         driver.otp = { magnitude: otp, type: 'login' };
         await driver.save();
-        await WalletModel.findOneAndUpdate({ user: driver._id }, { user: driver._id, user_type: "driver" }, { upsert: true, setDefaultsOnInsert: true });
+        let wallet = await WalletModel.findOne({ user: driver._id });
+        if (wallet) {
+            await WalletModel.findOneAndUpdate({ user: driver._id }, { user: driver._id, user_type: "driver" }, { upsert: true, setDefaultsOnInsert: true });
+        } else {
+            let obj2 = {
+                user: driver._id,
+                user_type: "driver"
+            }
+            await WalletModel.create(obj2)
+        }
         // await sendSms({ body: `otp for we fast is ${otp}`, phoneNumber: `${driver.country_code}${driver.phone_number}` });
         return driver;
     } catch (error) {
