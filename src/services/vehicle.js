@@ -1,8 +1,10 @@
-const { VehicleModel, DriverModel, VehicleTypeModel } = require('../models/index.js');
+// const { VehicleModel, DriverModel, VehicleTypeModel } = require('../models/index.js');
 const { ValidationError } = require('../errors/index.js');
 const snakecaseKeys = require('snakecase-keys');
 const camelcaseKeys = require('camelcase-keys');
-
+const VehicleModel = require('../models/vehicle.js');
+const DriverModel = require('../models/driver.js');
+const VehicleTypeModel = require('../models/vehicle-type.js');
 
 exports.addVehicle = async (driverId, payload) => {
     try {
