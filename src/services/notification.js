@@ -1,7 +1,10 @@
-const { NotificationModel, DriverModel, UserModel } = require("../models/index.js");
+// const { NotificationModel, DriverModel, UserModel } = require("../models/index.js");
 const { ValidationError } = require("../errors/index.js");
 const camelcaseKeys = require("camelcase-keys");
 const { login } = require("./driver.js");
+const DriverModel = require("../models/driver.js");
+const NotificationModel = require("../models/notification.js");
+const UserModel = require("../models/user.js");
 
 
 exports.sendNotificationToDrivers = async (

@@ -27,7 +27,5 @@ const NotificationSchema = new mongoose.Schema({
     toJSON: { versionKey: false }
 });
 
-// Create and export the Mongoose model for the Notification collection
-module.exports = {
-    NotificationModel: mongoose.model('notification', NotificationSchema)
-};
+const VehicleTypeModel = mongoose.model('notification', NotificationSchema);
+module.exports = VehicleTypeModel;
