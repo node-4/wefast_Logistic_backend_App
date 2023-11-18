@@ -198,7 +198,7 @@ exports.getBookingById = async (bookingId) => {
     const booking = await BookingModel.findById(bookingId).populate(
 
 
-      "user driver vehicle vehicle_type",
+      "user driver vehicle vehicle_type goods_type",
       // "name"
     );
     delete booking.__v;
