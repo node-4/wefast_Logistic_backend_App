@@ -138,6 +138,7 @@ const getBookingsofDriver = async (req, res, next) => {
             req.query.status = [req.query.status];
         }
         let driverId;
+        console.log(req.user.role);
         if (req.user.role == 'admin') {
             driverId = req.params.driverId;
         } else {

@@ -19,6 +19,7 @@ module.exports = (app) => {
     app.post('/booking/:bookingId/accept', auth.driver, bookingController.acceptBooking);
     app.get('/booking/user/:userId', auth.admin, bookingController.getAllBookingsOfUser);
     app.get('/booking/driver/:driverId', auth.admin, bookingController.getBookingsofDriver);
+    app.get('/booking/driver/all/Booking', auth.driver, bookingController.getBookingsofDriver);
     app.get("/booking/booking/suggestions", auth.driver, bookingController.getBookingSuggestion)
     app.post('/booking/reject/:bookingId', auth.driver, bookingController.rejectBooking);
 
