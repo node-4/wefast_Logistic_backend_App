@@ -21,6 +21,10 @@ module.exports = (app) => {
     app.get('/booking/driver/:driverId', auth.admin, bookingController.getBookingsofDriver);
     app.get("/booking/booking/suggestions", auth.driver, bookingController.getBookingSuggestion)
     app.post('/booking/reject/:bookingId', auth.driver, bookingController.rejectBooking);
+
+    app.get('/book/ing/driver', bookingController.getAllBookingsOfDriverbefore);
+
+
     //////////////////////////////////////////////////////////////////////////////////////////////
     // app.get('/booking/', auth.userOrdriver,
     //     // bookingValidator.statusQuery, (req, res, next) => {

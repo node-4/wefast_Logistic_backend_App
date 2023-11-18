@@ -295,6 +295,21 @@ exports.getEstimatedPrice = async (lat1, lon1, lat2, lon2, vehicleTypeId) => {
     throw error;
   }
 };
+
+
+exports.getAllBookingsOfDriverbefore = async () => {
+  try {
+    const bookings = await BookingModel.find({ orderType: "booking", status: "unconfirmed", }).sort({ createdAt: -1 }).populate({ path: "vehicle_type", select: "name image", model: 'vehicle_type' }).lean();
+    const bookingResponse = bookings.map((booking) => {
+      delete booking.__v;
+      return booking;
+    });
+
+    return bookingResponse
+  } catch (error) {
+    throw error;
+  }
+};
 const { getEstimatedPrice } = module.exports;
 //////////////////////////////////////////
 

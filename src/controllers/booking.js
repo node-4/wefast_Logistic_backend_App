@@ -154,19 +154,15 @@ const getBookingsofDriver = async (req, res, next) => {
     }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+const getAllBookingsOfDriverbefore = async (req, res, next) => {
+    try {
+        console.log("------------");
+        const bookings = await bookingService.getAllBookingsOfDriverbefore();
+        return res.status(200).json({ msg: 'bookings', data: bookings });
+    } catch (error) {
+        next(error);
+    }
+};
 const getBookingSuggestion = async (req, res, next) => {
     try {
         const bookings = await bookingService.getBookingSuggestion(req.user._id);
@@ -194,6 +190,7 @@ module.exports = {
     getAllBookingsOfUser,
     getBookingsofDriver,
     cancelBooking,
+    getAllBookingsOfDriverbefore,
     acceptBooking,
     checkBookingStatus,
     rejectBooking,
