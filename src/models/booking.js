@@ -122,10 +122,10 @@ const DocumentSchema = schema({
         enum: ['sender', 'receiver']
     },
     punchIn: {
-        type: String
+        type: Date
     },
     punchOut: {
-        type: String
+        type: Date
     },
     totalTime: {
         type: String

@@ -126,11 +126,58 @@ exports.cancelBooking = async (userId, bookingId) => {
     throw error;
   }
 };
+// exports.completeBooking = async (bookingId) => {
+//   try {
+//     const booking = await BookingModel.findById(bookingId);
+//     booking.status = "completed";
+//     booking.punchOut = new Date();
+//     const amount = booking.amount;
+//     if (booking.payment_mode === "wallet") {
+//       await Promise.all([
+//         booking.save(),
+//         WalletModel.findOneAndUpdate(
+//           { user: booking.user },
+//           {
+//             $inc: { balance: -1 * amount },
+//           }
+//         ),
+//         WalletModel.findOneAndUpdate(
+//           { user: booking.driver },
+//           {
+//             $inc: { balance: 0.9 * amount },
+//           }
+//         ),
+//       ]);
+//     } else {
+//       await Promise.all([
+//         booking.save(),
+//         WalletModel.findOneAndUpdate(
+//           { user: booking.driver },
+//           {
+//             $inc: { balance: -1 * 0.1 * amount },
+//           }
+//         ),
+//       ]);
+//     }
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+const msToTime = (duration) => {
+  const seconds = Math.floor((duration / 1000) % 60);
+  const minutes = Math.floor((duration / (1000 * 60)) % 60);
+  const hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+  const formattedTime =`${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+  return formattedTime;
+};
 exports.completeBooking = async (bookingId) => {
   try {
     const booking = await BookingModel.findById(bookingId);
     booking.status = "completed";
-
+    booking.punchOut = new Date();
+    const totalRideTimeMs = new Date() - booking.punchIn;
+    const totalRideTimeFormatted = msToTime(totalRideTimeMs);
+    booking.totalTime = totalRideTimeFormatted;
     const amount = booking.amount;
     if (booking.payment_mode === "wallet") {
       await Promise.all([
@@ -210,7 +257,7 @@ exports.getBookingById = async (bookingId) => {
 };
 exports.pickUpCheckIn = async (bookingId) => {
   try {
-    let a = await BookingModel.findByIdAndUpdate({ _id: bookingId }, { $set: { status: "on_going" } }, { new: true });
+    let a = await BookingModel.findByIdAndUpdate({ _id: bookingId }, { $set: { status: "on_going", punchIn: new Date() } }, { new: true });
     return a
   } catch (error) {
     throw error;

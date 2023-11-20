@@ -16,6 +16,8 @@ exports.driverOrderAmount = async (req, res) => {
             }
             const saveOrder = await driverEarning.create(obj);
             if (saveOrder) {
+                findOrders.driver_earning = req.body.amount;
+                findOrders.save()
                 const findS = await DriverModel.findOne({ _id: findOrders.driver });
                 let wallet = await WalletModel.findOne({ user: findS._id });
                 if (wallet) {
@@ -37,17 +39,42 @@ exports.driverOrderAmount = async (req, res) => {
         return res.status(501).send({ status: 501, message: "server error.", data: {}, });
     }
 };
+// exports.allEarning = async (req, res) => {
+//     try {
+//         const saveOrder = await driverEarning.find({ driverId: req.user._id, }).populate('Orders');
+//         if (saveOrder.length == 0) {
+//             return res.status(200).json({ msg: 'Driver Earning', data: {} })
+//         } else {
+//             return res.status(200).json({ msg: 'Driver Earning', data: saveOrder })
+//         }
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(501).send({ status: 501, message: "server error.", data: {}, });
+//     }
+// };
 exports.allEarning = async (req, res) => {
     try {
-        const saveOrder = await driverEarning.find({ driverId: req.user._id, }).populate('Orders');
-        if (saveOrder.length == 0) {
-            return res.status(200).json({ msg: 'Driver Earning', data: {} })
+        const { startDate, endDate, months } = req.query;
+        const query = { driverId: req.user._id };
+        if ((startDate != null) && (endDate != null)) {
+            const startDateTime = new Date(`${startDate}T00:00:00Z`);
+            const endDateTime = new Date(`${endDate}T23:59:59Z`);
+            query.createdAt = { $gte: startDateTime, $lte: endDateTime };
+        } else if (months != null) {
+            // Assuming months is a number specifying the number of months to go back
+            const startDateTime = new Date();
+            startDateTime.setUTCMonth(startDateTime.getUTCMonth() - parseInt(months));
+            query.createdAt = { $gte: startDateTime };
+        }
+        const saveOrder = await driverEarning.find(query).populate('Orders');
+        if (saveOrder.length === 0) {
+            return res.status(200).json({ msg: 'Driver Earning', data: {} });
         } else {
-            return res.status(200).json({ msg: 'Driver Earning', data: saveOrder })
+            return res.status(200).json({ msg: 'Driver Earning', data: saveOrder });
         }
     } catch (error) {
         console.log(error);
-        return res.status(501).send({ status: 501, message: "server error.", data: {}, });
+        return res.status(501).send({ status: 501, message: "server error.", data: {} });
     }
 };
 exports.allEarningforAdmin = async (req, res) => {

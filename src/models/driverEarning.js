@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate");
+const mongooseAggregatePaginate = require("mongoose-aggregate-paginate");
 const schema = mongoose.Schema;
 const DocumentSchema = schema({
         driverId: {
@@ -14,4 +16,6 @@ const DocumentSchema = schema({
                 default: 0,
         },
 }, { timestamps: true })
+DocumentSchema.plugin(mongoosePaginate);
+DocumentSchema.plugin(mongooseAggregatePaginate);
 module.exports = mongoose.model("driverEarning", DocumentSchema);
