@@ -4,7 +4,7 @@ const addBanner = async (bannerImage) => {
         const banner = new BannerModel({ image: bannerImage });
         await banner.save();
 
-        return banner.toObject();
+        return banner;
     } catch (error) {
         throw error;
     }

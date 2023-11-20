@@ -47,7 +47,7 @@ exports.loginOtpVerification = async (phoneNumber, otp) => {
             throw new ValidationError('invalid Otp');
         }
         const loginToken = await generateToken(driver._id, 'login');
-        return { loginToken, areDocumentsUploaded: !!driver.are_documents_uploaded, isVehicleRegistered: !!driver.is_vehicle_registered };
+        return { loginToken, areDocumentsUploaded: !!driver.are_documents_uploaded, isVehicleRegistered: !!driver.is_vehicle_registered, userId: driver._id };
     } catch (error) {
         throw error;
     }
