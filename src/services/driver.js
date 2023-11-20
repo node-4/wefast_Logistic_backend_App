@@ -113,3 +113,15 @@ exports.getDriverProfile = async (driverId) => {
         throw error;
     }
 };
+
+exports.deleteDriver = async (driverId) => {
+    try {
+        const goodsType = await DriverModel.findById(driverId);
+        if (!goodsType) {
+            throw new ValidationError('invalid driverId');
+        }
+        await DriverModel.findByIdAndDelete(goodsType);
+    } catch (error) {
+        throw error;
+    }
+}
