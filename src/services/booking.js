@@ -210,7 +210,7 @@ exports.getBookingById = async (bookingId) => {
 };
 exports.pickUpCheckIn = async (bookingId) => {
   try {
-    let a = await BookingModel.findByIdAndUpdate(bookingId, { status: "on_going", });
+    let a = await BookingModel.findByIdAndUpdate({ _id: bookingId }, { $set: { status: "on_going" } }, { new: true });
     return a
   } catch (error) {
     throw error;
@@ -290,9 +290,9 @@ exports.getEstimatedPrice = async (lat1, lon1, lat2, lon2, vehicleTypeId) => {
       VehicleTypeModel.findById(vehicleTypeId),
       getDistance(lat1, lon1, lat2, lon2),
     ]);
-    console.log(distance);
-    console.log(vehicleType);
-    return vehicleType.price_per_km * distance;
+    let data = vehicleType.price_per_km * distance;
+    let data1 = Number(data.toFixed(2)) + vehicleType.base_fare;
+    return data1;
   } catch (error) {
     throw error;
   }
