@@ -121,6 +121,18 @@ const DocumentSchema = schema({
         type: String,
         enum: ['sender', 'receiver']
     },
+    punchIn: {
+        type: String
+    },
+    punchOut: {
+        type: String
+    },
+    totalTime: {
+        type: String
+    },
+    driver_earning: {
+        type: Number
+    },
 }, { timestamps: true })
 // DocumentSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model("booking", DocumentSchema);

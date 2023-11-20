@@ -39,6 +39,7 @@ require("./src/routes/image-upload")(app);
 require("./src/routes/help-and-support")(app);
 require("./src/routes/wallet")(app);
 require("./src/routes/webhook")(app);
+require("./src/routes/driverEarning")(app);
 
 // app.use("/driver", driverRouter);
 // app.use("/admin", adminRouter);
