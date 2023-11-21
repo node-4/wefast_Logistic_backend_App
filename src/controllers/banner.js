@@ -22,8 +22,8 @@ const getAllBanners = async (req, res, next) => {
 }
 const deleteBanner = async (req, res, next) => {
     try {
-        await bannerService.deleteBanner(req.params.bannerId);
-        return res.status(200).json({ msg: 'banner deleted' });
+        let a = await bannerService.deleteBanner(req.params.bannerId);
+        return res.status(200).json(a);
     } catch (error) {
         next(error);
     }

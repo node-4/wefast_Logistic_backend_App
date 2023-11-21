@@ -26,9 +26,12 @@ const deleteBanner = async (driverId) => {
     try {
         const goodsType = await BannerModel.findById(driverId);
         if (!goodsType) {
-            throw new ValidationError('invalid bannerId');
+            let a = { msg: 'invalid bannerId' }
+            return a
         }
         await BannerModel.findByIdAndDelete(driverId);
+        let a = { msg: 'banner deleted' }
+        return a
     } catch (error) {
         throw error;
     }
