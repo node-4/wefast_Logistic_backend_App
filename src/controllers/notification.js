@@ -17,10 +17,11 @@ const getNotifications = async (req, res, next) => {
         let notifications;
         if (req.user.role === 'driver') {
             notifications = await notificationService.getDriversNotification(req.user._id);
-        } else {
+        } else if (req.user.role === 'driver') {
             notifications = await notificationService.getUsersNotification(req.user._id);
+        } else {
+            notifications = await notificationService.getNotification();
         }
-
         return res.status(200).json({
             msg: `${req.user.role} notifications`,
             data: notifications
@@ -30,6 +31,17 @@ const getNotifications = async (req, res, next) => {
     }
 };
 
+const getNotificationsforAdmin = async (req, res, next) => {
+    try {
+        let notifications = await notificationService.getNotification();
+        return res.status(200).json({
+            msg: `notifications`,
+            data: notifications
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 const getDriversNotifications = async (req, res, next) => {
     try {
         const notifications = await notificationService.getDriversNotification(req.params.driverId);
@@ -86,5 +98,6 @@ module.exports = {
     getDriversNotifications,
     sendNotificationToUsers,
     getUsersNotifications,
+    getNotificationsforAdmin,
     deleteNotification
 };

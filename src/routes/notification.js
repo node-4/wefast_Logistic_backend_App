@@ -27,5 +27,6 @@ module.exports = (app) => {
         app.delete('/notification/', auth.userOrdriver,
                 // notificationValidator.deleteNotification,
                 notificationController.deleteNotification);
+        app.get('/getNotificationsforAdmin', auth.admin, notificationController.getNotificationsforAdmin);
 };
 // module.exports = { notificationRouter: router };

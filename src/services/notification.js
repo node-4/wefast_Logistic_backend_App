@@ -115,3 +115,17 @@ exports.deleteNotification = async (receiverId, notificationId) => {
     throw error;
   }
 };
+
+exports.getNotification = async () => {
+  try {
+    const notifications = await NotificationModel.find({}).select("+receiver_entity_type").populate("receiver", "name").lean();
+    const notificationsResponse = notifications.map((notification) => {
+      delete notification.__v;
+      return camelcaseKeys(notification);
+    });
+
+    return notificationsResponse;
+  } catch (error) {
+    throw error;
+  }
+};
