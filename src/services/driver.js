@@ -118,9 +118,12 @@ exports.deleteDriver = async (driverId) => {
     try {
         const goodsType = await DriverModel.findById(driverId);
         if (!goodsType) {
-            throw new ValidationError('invalid driverId');
+            let a = { msg: 'invalid driverId' }
+            return a
         }
         await DriverModel.findByIdAndDelete(goodsType);
+        let a = { msg: 'driver deleted' }
+        return a
     } catch (error) {
         throw error;
     }
