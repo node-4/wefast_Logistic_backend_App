@@ -22,7 +22,7 @@ const getAllBanners = async () => {
         throw error;
     }
 }
-exports.deleteBanner = async (driverId) => {
+const deleteBanner = async (driverId) => {
     try {
         const goodsType = await BannerModel.findById(driverId);
         if (!goodsType) {
