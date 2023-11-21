@@ -52,7 +52,7 @@ const getAllUsers = async (req, res, next) => {
     try {
         let page = 0;
         if (req.query.page > 0) { page = req.query.page - 1; }
-        const users = await userService.getAllUsers(page);
+        const users = await userService.getAllUsers(page, 10);
         return res.status(200).json({ msg: 'users', data: users });
     } catch (error) {
         next(error);

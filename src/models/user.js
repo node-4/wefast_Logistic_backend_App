@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const OtpSchema = require('./schemas/otp.js');
-
+const mongoosePaginate = require("mongoose-paginate");
+const mongooseAggregatePaginate = require("mongoose-aggregate-paginate");
 // Define the schema for the User collection
 const UserSchema = new mongoose.Schema(
   {
@@ -78,6 +79,8 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+UserSchema.plugin(mongoosePaginate);
+UserSchema.plugin(mongooseAggregatePaginate);
 // Create and export the Mongoose model for the User collection
 module.exports = {
   UserModel: mongoose.model("user", UserSchema)

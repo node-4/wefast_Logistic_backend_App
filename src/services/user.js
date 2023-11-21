@@ -136,15 +136,30 @@ exports.getUserInfo = async (userId) => {
         throw error;
     }
 }
-exports.getAllUsers = async (page) => {
+// exports.getAllUsers = async (page) => {
+//     try {
+//         const users = await UserModel.find({}).sort({ createdAt: -1 }).skip(page).limit(10).lean();
+//         const UserResponse = users.map((user) => { delete user.__v; return camelcaseKeys(user); })
+//         return UserResponse;
+//     } catch (error) {
+//         throw error;
+//     }
+// }
+
+exports.getAllUsers = async (page, limit) => {
     try {
-        const users = await UserModel.find({}).sort({ createdAt: -1 }).skip(page).limit(10).lean();
-        const UserResponse = users.map((user) => { delete user.__v; return camelcaseKeys(user); })
+        let query = {};
+        let options = {
+            page: Number(page) || 1,
+            limit: Number(limit) || 10,
+            sort: { createdAt: -1 },
+        };
+        let UserResponse = await UserModel.paginate(query, options);
         return UserResponse;
     } catch (error) {
         throw error;
     }
-}
+};
 exports.updateDeliveryPrefrences = async (userId, prefrencesPayload) => {
     try {
         console.log(prefrencesPayload);
