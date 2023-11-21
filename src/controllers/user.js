@@ -95,8 +95,8 @@ const updateLocation = async (req, res) => {
 };
 const deleteUser = async (req, res, next) => {
     try {
-        await userService.deleteUser(req.params.userId);
-        return res.status(200).json({ msg: 'User deleted' });
+        let a = await userService.deleteUser(req.params.userId);
+        return res.status(200).json(a);
     } catch (error) {
         next(error);
     }

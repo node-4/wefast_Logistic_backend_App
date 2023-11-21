@@ -192,9 +192,12 @@ exports.deleteUser = async (userId) => {
     try {
         const goodsType = await UserModel.findById(userId);
         if (!goodsType) {
-            throw new ValidationError('invalid userId');
+            let a = { msg: 'invalid userId' }
+            return a
         }
-        await UserModel.findByIdAndDelete(goodsType);
+        await UserModel.findByIdAndDelete(userId);
+        let a = { msg: 'user  deleted' }
+        return a
     } catch (error) {
         throw error;
     }
