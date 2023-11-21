@@ -14,4 +14,5 @@ module.exports = (app) => {
         app.put('/user/delivery-preference', auth.user, userValidator.deliveryPreference, userController.updateDeliveryPreferences);
         app.put('/user/update', auth.user, userValidator.updateDetails, userController.updateDetails);
         app.put('/user/update/Location', auth.user, userController.updateLocation);
+        app.delete("/user/:userId", auth.admin, userController.deleteUser);
 };

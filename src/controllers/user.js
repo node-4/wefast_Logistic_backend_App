@@ -93,6 +93,14 @@ const updateLocation = async (req, res) => {
         return res.status(500).send({ status: 500, message: "Server error" + error.message });
     }
 };
+const deleteUser = async (req, res, next) => {
+    try {
+        await userService.deleteUser(req.params.userId);
+        return res.status(200).json({ msg: 'User deleted' });
+    } catch (error) {
+        next(error);
+    }
+};
 module.exports = {
     // register,
     // registrationOtpVerification,
@@ -103,5 +111,6 @@ module.exports = {
     updateUserName,
     getAllUsers,
     getUserInfo,
-    updateLocation
+    updateLocation,
+    deleteUser
 };

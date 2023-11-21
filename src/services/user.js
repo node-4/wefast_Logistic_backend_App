@@ -188,3 +188,14 @@ exports.updateLocation = async (userId, currentLat, currentLong) => {
         throw error;
     }
 };
+exports.deleteUser = async (userId) => {
+    try {
+        const goodsType = await UserModel.findById(userId);
+        if (!goodsType) {
+            throw new ValidationError('invalid userId');
+        }
+        await UserModel.findByIdAndDelete(goodsType);
+    } catch (error) {
+        throw error;
+    }
+}
