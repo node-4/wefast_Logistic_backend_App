@@ -9,5 +9,6 @@ module.exports = (app) => {
         app.post('/banner', auth.admin, bannerValidator.addBanner, bannerController.addBanner);
 
         app.get('/banner', bannerController.getAllBanners);
+        app.delete("/banner/:bannerId", auth.admin, bannerController.deleteBanner);
 }
 // module.exports = { bannerRouter: router };

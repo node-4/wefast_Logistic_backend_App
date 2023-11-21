@@ -9,7 +9,6 @@ const addBanner = async (bannerImage) => {
         throw error;
     }
 }
-
 const getAllBanners = async () => {
     try {
         const banners = await BannerModel.find({});
@@ -23,8 +22,20 @@ const getAllBanners = async () => {
         throw error;
     }
 }
+exports.deleteBanner = async (driverId) => {
+    try {
+        const goodsType = await BannerModel.findById(driverId);
+        if (!goodsType) {
+            throw new ValidationError('invalid bannerId');
+        }
+        await BannerModel.findByIdAndDelete(driverId);
+    } catch (error) {
+        throw error;
+    }
+}
 
 module.exports = {
     addBanner,
-    getAllBanners
+    getAllBanners,
+    deleteBanner
 };
