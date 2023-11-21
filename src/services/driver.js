@@ -128,3 +128,11 @@ exports.deleteDriver = async (driverId) => {
         throw error;
     }
 }
+exports.getDriver = async (driverId) => {
+    try {
+        const goodsType = await DriverModel.findById(driverId);
+        return camelcaseKeys(goodsType.toObject());
+    } catch (error) {
+        throw error;
+    }
+}

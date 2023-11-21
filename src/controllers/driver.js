@@ -62,3 +62,12 @@ exports.deleteDriver = async (req, res, next) => {
         next(error);
     }
 };
+exports.getDriver = async (req, res, next) => {
+    try {
+        let a = await driverService.getDriver(req.params.driverId);
+        return res.status(200).json({ msg: "driver", data: a });
+
+    } catch (error) {
+        next(error);
+    }
+};

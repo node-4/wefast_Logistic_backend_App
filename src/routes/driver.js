@@ -18,5 +18,6 @@ module.exports = (app) => {
 
         app.get('/driver/all', auth.admin, driverController.getAllDrivers);
         app.delete("/driver/:driverId", auth.admin, driverController.deleteDriver);
+        app.get("/driverbyId/:driverId", driverController.getDriver);
 };
 // module.exports = router;
