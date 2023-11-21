@@ -24,6 +24,7 @@ module.exports = (app) => {
     app.post('/booking/reject/:bookingId', auth.driver, bookingController.rejectBooking);
 
     app.get('/book/ing/driver', bookingController.getAllBookingsOfDriverbefore);
+    app.get('/booking/AllAdmin', auth.admin, bookingController.getBookingsofAdmin);
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////

@@ -167,7 +167,7 @@ const msToTime = (duration) => {
   const seconds = Math.floor((duration / 1000) % 60);
   const minutes = Math.floor((duration / (1000 * 60)) % 60);
   const hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-  const formattedTime =`${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+  const formattedTime = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
   return formattedTime;
 };
 exports.completeBooking = async (bookingId) => {
@@ -315,7 +315,15 @@ exports.getAllloadBookingsOfUser = async (userId, query = ["completed", "cancell
   }
 };
 /////////////////////////////////////////////////////new function ///////////////
-
+exports.getBookingsofAdmin = async () => {
+  try {
+    const bookings = await BookingModel.find({}).populate("user driver vehicle vehicle_type").lean();
+    const bookingResponse = bookings.map((booking) => { delete booking.__v; return booking; });
+    return camelcaseKeys(bookingResponse);
+  } catch (error) {
+    throw error;
+  }
+};
 const getDistance = async (lat1, lon1, lat2, lon2) => {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2 - lat1);  // deg2rad below

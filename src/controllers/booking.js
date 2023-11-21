@@ -154,6 +154,18 @@ const getBookingsofDriver = async (req, res, next) => {
         next(error);
     }
 };
+const getBookingsofAdmin = async (req, res, next) => {
+    try {
+        const bookings = await bookingService.getBookingsofAdmin();
+
+        return res.status(200).json({
+            msg: 'bookings',
+            data: bookings
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 const getAllBookingsOfDriverbefore = async (req, res, next) => {
     try {
@@ -189,6 +201,7 @@ module.exports = {
     createBooking,
     createScheduledBooking,
     getAllBookingsOfUser,
+    getBookingsofAdmin,
     getBookingsofDriver,
     cancelBooking,
     getAllBookingsOfDriverbefore,
