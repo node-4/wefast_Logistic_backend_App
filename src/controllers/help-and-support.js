@@ -19,7 +19,7 @@ module.exports.getHelpAndSupport = async (req, res, next) => {
 
         return res.status(200).json({
             msg: 'help and support',
-            data: { ...helpAndSupport }
+            data: helpAndSupport
         })
     } catch (error) {
         next(error);

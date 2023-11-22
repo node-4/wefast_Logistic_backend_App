@@ -21,9 +21,9 @@ const add = async (payload) => {
 
 const getHelpAndSupport = async () => {
     try {
-        const helpAndSupport = await HelpAndSupportModel.findOne({});
+        const helpAndSupport = await HelpAndSupportModel.find({});
 
-        return camelcaseKeys(helpAndSupport.toObject());
+        return helpAndSupport;
     } catch (error) {
         throw error;
     }
