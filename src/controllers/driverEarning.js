@@ -1,7 +1,11 @@
 const DriverModel = require("../models/driver.js");
 const BookingModel = require("../models/booking");
 const driverEarning = require("../models/driverEarning.js");
+const VehicleTypeModel = require('../models/vehicle-type');
+const VehicleModel = require('../models/vehicle.js');
 const WalletModel = require("../models/wallet.js");
+const UserModel = require('../models/user.js');
+const banner = require('../models/banners.js');
 exports.driverOrderAmount = async (req, res) => {
     try {
         const findOrders = await BookingModel.findById({ _id: req.params.id });
@@ -110,3 +114,28 @@ exports.driverDashboard = async (req, res) => {
         return res.status(501).send({ status: 501, message: "server error.", data: {}, });
     }
 };
+exports.adminDashboard = async (req, res) => {
+    try {
+        const totalBooking = await BookingModel.find({ status: "completed" }).count();
+        const totalVehicleType = await VehicleTypeModel.find({}).count();
+        const totalVehicle = await VehicleModel.find({}).count();
+        const totalDriver = await DriverModel.find({}).count();
+        const totalUser = await UserModel.find({}).count();
+        const totalBanner = await banner.find({}).count();
+
+        let obj = {
+            totalBooking: totalBooking,
+            totalVehicleType: totalVehicleType,
+            totalVehicle: totalVehicle,
+            totalDriver: totalDriver,
+            totalUser: totalUser,
+            totalBanner: totalBanner
+        }
+        return res.status(200).json({ msg: 'admin dashboard', data: obj })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(501).send({ status: 501, message: "server error.", data: {}, });
+    }
+};
+//  ,users, banner ,

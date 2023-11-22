@@ -7,5 +7,6 @@ module.exports = (app) => {
         app.get("/Earning/allEarning", auth.driver, driverEarning.allEarning);
         app.get("/Earning/driverDashboard", auth.driver, driverEarning.driverDashboard);
         app.get("/Earning/allEarningforAdmin", driverEarning.allEarningforAdmin);
+        app.get("/dashboard/adminDashboard", auth.admin, driverEarning.adminDashboard);
 };
 // module.exports = router;
