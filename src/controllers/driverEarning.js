@@ -4,7 +4,7 @@ const driverEarning = require("../models/driverEarning.js");
 const VehicleTypeModel = require('../models/vehicle-type');
 const VehicleModel = require('../models/vehicle.js');
 const WalletModel = require("../models/wallet.js");
-const UserModel = require('../models/user.js');
+const { UserModel } = require('../models/index.js');
 const banner = require('../models/banners.js');
 exports.driverOrderAmount = async (req, res) => {
     try {
