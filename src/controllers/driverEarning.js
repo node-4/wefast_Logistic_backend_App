@@ -16,8 +16,7 @@ exports.driverOrderAmount = async (req, res) => {
             }
             const saveOrder = await driverEarning.create(obj);
             if (saveOrder) {
-                findOrders.driver_earning = req.body.amount;
-                findOrders.save()
+                let data2 = await BookingModel.findOneAndUpdate({ _id: findOrders._id }, { $set: { driver_earning: req.body.amount } }, { new: true });
                 const findS = await DriverModel.findOne({ _id: findOrders.driver });
                 let wallet = await WalletModel.findOne({ user: findS._id });
                 if (wallet) {
