@@ -20,14 +20,15 @@ exports.addvehicleType = async (payload) => {
             lowercase_name: payload.name.toLowerCase()
         });
         if (vehicleTypeExist) {
-            throw new ValidationError('vehicle type with name already exists');
+            let a = { msg: 'vehicle type with name already exists', data: {} }
+            return a
         }
 
         const vehicleType = new VehicleTypeModel(snakeCaseKeys(payload));
 
         await vehicleType.save();
-
-        return camelCaseKeys(vehicleType.toObject());
+        let a = { msg: 'vehicle type added successfully', data: camelCaseKeys(vehicleType.toObject()) }
+        return a
     } catch (error) {
         throw error;
     }
@@ -46,27 +47,25 @@ exports.addvehicleType = async (payload) => {
 exports.updateVehicleType = async (vehicleTypeId, updatePayload) => {
     try {
         const vehicleType = await VehicleTypeModel.findById(vehicleTypeId);
-
         if (!vehicleType) {
-            throw new ValidationError('invalid vehicleTypeId');
+            let a = { msg: 'invalid vehicleTypeId', data: {} }
+            return a
         }
-
         if (updatePayload.name && updatePayload.lowercase_name !== vehicleType.name.toLowerCase()) {
             const nameExist = await VehicleTypeModel.findOne({
                 lowercase_name: updatePayload.name.toLowerCase()
             });
             updatePayload.lowercase_name = updatePayload.name.toLowerCase();
             if (nameExist) {
-                throw new ValidationError('vehicle type with name already exist');
+                let a = { msg: 'vehicle type with name already exist', data: {} }
+                return a
             }
         }
-
         await vehicleType.updateOne(snakeCaseKeys(updatePayload));
-
         const updatedVehicleType = await VehicleTypeModel.findById(vehicleType.id).lean();
         delete updatedVehicleType.__v;
-
-        return camelCaseKeys(updatedVehicleType);
+        let a = { msg: 'vehicle type updated', data: camelCaseKeys(updatedVehicleType) }
+        return a
     } catch (error) {
         throw error;
     }
